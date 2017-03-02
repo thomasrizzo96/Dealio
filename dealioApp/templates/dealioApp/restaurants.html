@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% extends "dealioApp/home.html" %}
+
+
+</head>
+
+<body style = "background-color: #2aabd2">
+  {% block content %}
+  <div class="container-fluid" >
+
+    <h1 style = "text-align: center">Restaurants</h1>
+    <hr>
+    <ul>
+        {% for rest in restaurants %}
+            <li><h1 style="text-align: left"><a href= promotions/{{rest.id}} >{{rest.name}}</a></h1> <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
+        {% endfor %}
+    </ul>
+  {% endblock %}
+  </div>
+
+
+
+
+
+
+</body>
+
+
