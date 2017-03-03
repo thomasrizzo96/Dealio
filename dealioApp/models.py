@@ -66,9 +66,9 @@ class Restaurant(models.Model):
 class Owner(models.Model):
     restaurants = models.ManyToManyField(Restaurant)
     owner_id = models.CharField(max_length = 25, unique=True)
+    name = models.CharField(max_length = 25, unique=False)
+    email = models.CharField(max_length = 25, unique=True)
+    password = models.CharField(max_length = 25, unique=False)
 
     def __str__(self):
         return self.owner_id
-
-
-
