@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost','bestdealio.com','192.168.0.6']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
