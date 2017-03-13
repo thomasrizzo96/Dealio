@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from dealioApp.models import Restaurant
-from django.views.generic.edit import CreateView
+
 # Create your views here.
 
 
 def index(request):
     return render(request, 'dealioApp/home.html') #render looks in templates directory
 
+def placefinder(request):
+    return render(request, 'dealioApp/placefinder.html')
 
 def restaurants(request):
     restaurants = Restaurant.objects.all()
@@ -16,8 +18,3 @@ def restaurants(request):
 def promotions(request, restaurant_id):#pass in a restaurant's id into this view to access its promotions via getPromotions
     restaurant = Restaurant.objects.get(id=restaurant_id)
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
-
-
-class RestaurantCreate(CreateView):
-    model = Restaurant
-    fields = ['name', 'proms', 'category', 'review_link']

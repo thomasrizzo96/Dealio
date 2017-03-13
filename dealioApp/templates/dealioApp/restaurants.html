@@ -9,7 +9,41 @@
 
 <body style = "background-color: #2aabd2">
   {% block content %}
-  <div class="container-fluid" >
+  <div class="container-fluid" style = "position: fixed;height: 90%; width: 95%" >
+      <div class = "row" style = "position: inherit; height: inherit; width: inherit">
+    <div class = "col-xs-4 col-sm-4 col-md-2 col-lg-2" style = "height: inherit;">
+          <br><br><br>
+          <div class="well bs-sidebar" id="sidebar" style="background-color:#fff; height: inherit"  >
+              <ul class="nav nav-pills nav-stacked">
+                  <li><h2>Filter</h2></li>
+                  <div class='checkbox'>
+                     <label>
+                        <input type='checkbox' id='Mexican'>Mexican
+                    </label>
+                  </div>
+                <div class='checkbox'>
+                     <label>
+                        <input type='checkbox' id='American'>American
+                    </label>
+                  </div>
+                <div class='checkbox'>
+                     <label>
+                        <input type='checkbox' id='Italian'>Italian
+                    </label>
+                  </div>
+                <div class='checkbox'>
+                     <label>
+                        <input type='checkbox' id='Chinese'>Chinese
+                    </label>
+                  </div>
+                <input type="Submit" class='btn btn-primary' style='position: relative'>
+                <input type='reset' class='btn btn-primary' style='position: relative'>
+
+
+              </ul>
+          </div> <!--well bs-sidebar affix-->
+
+        </div>
 
     <h1 style = "text-align: center">Restaurants</h1>
     <hr>
