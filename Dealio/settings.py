@@ -25,8 +25,7 @@ SECRET_KEY = '(xokqg32f7090f13!hiv1(i2rki+u*0@=sm5@rd&f0-v59h=cx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','bestdealio.com','192.168.0.6']
-
+ALLOWED_HOSTS = []
 
 
 # Application definition
