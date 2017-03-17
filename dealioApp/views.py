@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from dealioApp.models import Restaurant
+from dealioApp.models import Promotion
 from django.views.generic.edit import CreateView
 # Create your views here.
 
@@ -21,3 +22,10 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
 class RestaurantCreate(CreateView):
     model = Restaurant
     fields = ['name', 'proms', 'category', 'review_link']
+
+class PromotionCreate(CreateView):
+    model = Promotion
+    fields = ['title', 'description', 'rating']
+
+def gAPIComplete(request):
+    return render(request, 'dealioApp/gAPIComplete.html')
