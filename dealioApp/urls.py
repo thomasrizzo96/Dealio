@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^promotions/(?P<restaurant_id>\d+)/$', views.promotions, name='promotions'),#this uses a named group for regex
     url(r'^restaurant/add/$', views.RestaurantCreate.as_view(), name='restaurant-add'),
     url(r'^ownerLogin$', views.ownerLogin, name ='ownerLogin'),
+    url(r'^placefinder$', views.placefinder, name='placefinder'),
 ]

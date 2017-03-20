@@ -23,3 +23,6 @@ def ownerLogin(request):
 class RestaurantCreate(CreateView):
     model = Restaurant
     fields = ['name', 'proms', 'category', 'review_link']
+
+def placefinder(request):
+    return render(request, 'dealioApp/placefinder.html')
