@@ -18,10 +18,10 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
     restaurant = Restaurant.objects.get(id=restaurant_id)
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
-<<<<<<< HEAD
+
 def ownerLogin(request):
     return render(request, 'dealioApp/ownerLogin.html')
-=======
+
 
 class RestaurantCreate(CreateView):
     model = Restaurant
@@ -33,4 +33,3 @@ class PromotionCreate(CreateView):
 
 def gAPIComplete(request):
     return render(request, 'dealioApp/gAPIComplete.html')
->>>>>>> a2a5da3e4e807ca9b7a462472f553bcbb27da005
