@@ -17,6 +17,8 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
     restaurant = Restaurant.objects.get(id=restaurant_id)
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
+def ownerLogin(request):
+    return render(request, 'dealioApp/ownerLogin.html')
 
 class RestaurantCreate(CreateView):
     model = Restaurant
