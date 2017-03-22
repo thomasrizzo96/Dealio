@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from dealioApp.models import Restaurant
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 # Create your views here.
 
 
@@ -21,6 +21,10 @@ def ownerLogin(request):
     return render(request, 'dealioApp/ownerLogin.html')
 
 class RestaurantCreate(CreateView):
+    model = Restaurant
+    fields = ['name', 'proms', 'category', 'review_link']
+
+class RestaurantUpdate(UpdateView):
     model = Restaurant
     fields = ['name', 'proms', 'category', 'review_link']
 
