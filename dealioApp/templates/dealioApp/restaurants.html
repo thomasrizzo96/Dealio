@@ -9,18 +9,34 @@
 
 <body style = "background-color: #2aabd2">
   {% block content %}
-  <div class="container-fluid" >
+  <div class = "container-fluid">
+    <div class="row">
+      <div class = "col-xs-4 col-sm-4 col-md-2 col-lg-2">
+          <br><br><br>
+          <div class="well bs-sidebar" id="sidebar" style="background-color:#fff; height: 500px;"  >
+              <ul class="nav nav-pills nav-stacked">
+                  <li><h2>Rest. Filter</h2></li>
+                  <li>filter2</li>
+                  <li> </li>
+                  <li> </li>
+                  <li> </li>
 
-    <h1 style = "text-align: center">Restaurants</h1>
-    <hr>
-    <ul>
-        {% for rest in restaurants %}
-            <li><h1 style="text-align: left"><a href= promotions/{{rest.id}} >{{rest.name}}</a></h1> <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
-        {% endfor %}
-    </ul>
-  {% endblock %}
+              </ul>
+          </div> <!--well bs-sidebar affix-->
+        </div>
+
+        <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align="center">
+            <h1 style = "text-align: center">Restaurants</h1>
+            <hr>
+            <ul>
+                {% for rest in restaurants %}
+                    <li><h1 style="text-align: left"><a class= "btn btn-primary btn-lg" href= promotions/{{rest.id}} >{{rest.name}}</a></h1> <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
+                {% endfor %}
+            </ul>
+        </div>
+      </div>
   </div>
-
+    {% endblock %}
 
 
 

@@ -17,10 +17,16 @@ class Promotion(models.Model):
         )
          ),
     )
-    rating = models.CharField(max_length=1, choices=STARS, unique=True)
+    rating = models.CharField(max_length=1, choices=STARS, default=1)
 
     def __str__(self):
         return self.title
+    def set_title(self, title):
+        self.title = title
+    def set_description(self, desc):
+        self.description = desc
+    def set_rating(self, rating):
+        self.rating = rating
 
 
 class Restaurant(models.Model):
@@ -52,6 +58,9 @@ class Restaurant(models.Model):
     def getCategory(self):
         return self.category
 
+    def addPromo(self, promo):
+        self.proms.add(promo)
+
     def getPromotions(self):
         promos = []
         for i in range(0,self.proms.count()):
@@ -69,10 +78,11 @@ class Restaurant(models.Model):
 
 class Owner(models.Model):
     restaurants = models.ManyToManyField(Restaurant)
-    owner_id = models.CharField(max_length = 25, unique=True)
+    owner_id = models.CharField(max_length=25, unique=True)
 
     def __str__(self):
         return self.owner_id
+
 
 
 

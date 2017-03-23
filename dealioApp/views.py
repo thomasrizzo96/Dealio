@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from dealioApp.models import Restaurant
-from django.views.generic.edit import CreateView, UpdateView
+from dealioApp.models import Promotion
+from django.http import HttpResponseRedirect
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from dealioApp.forms import addPromo
 # Create your views here.
 
 
@@ -22,11 +26,28 @@ def ownerLogin(request):
 
 class RestaurantCreate(CreateView):
     model = Restaurant
-    fields = ['name', 'proms', 'category', 'review_link']
+    fields = ['name', 'category', 'review_link']
 
 class RestaurantUpdate(UpdateView):
     model = Restaurant
-    fields = ['name', 'proms', 'category', 'review_link']
+    fields = ['name', 'category', 'review_link']
 
 def placefinder(request):
     return render(request, 'dealioApp/placefinder.html')
+
+def add_promo(request, restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = addPromo(request.POST)
+        if form.is_valid():
+            newPromo = form.save()
+            restaurant.addPromo(newPromo)
+        return HttpResponseRedirect('/promotions/' + restaurant_id)
+    else:
+        form = addPromo()
+    return render(request, 'dealioApp/addPromo.html', {'form':form})
+
+class delete_promo(DeleteView):
+    model = Promotion
+    success_url = reverse_lazy('restaurants')
