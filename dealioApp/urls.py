@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from . import views
-
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^promotion_confirm_delete/(?P<pk>\d+)/$', views.delete_promo.as_view(), name='promotion-delete'),
     url(r'^restaurant/add/$', views.RestaurantCreate.as_view(), name='restaurant-add'),
     url(r'^restaurant/(?P<pk>\d+)/$', views.RestaurantUpdate.as_view(), name='restaurant-update'),
-    url(r'^ownerLogin$', views.ownerLogin, name='ownerLogin'),
+    url(r'^ownerSignUp$', views.ownerSignUp, name ='ownerSignUp'),
+    url(r'^ownerLogin$', auth_views.login, {'template_name': 'dealioApp\ownerLogin.html'}, name ='ownerLogin'),
+    url(r'^ownerLogout/$', auth_views.logout, {'template_name': 'dealioApp\ownerLogout.html', 'next_page': '/'}, name='logout'),
     url(r'^placefinder$', views.placefinder, name='placefinder'),
 ]
