@@ -8,26 +8,58 @@
 
 <body style = "background-color: #2aabd2">
   {% block content %}
-  <div class="container-fluid" >
+  <div class="container-fluid">
+    <div class="row">
+        <div class = "col-xs-4 col-sm-4 col-md-2 col-lg-2">
+          <br><br><br>
+          <div class="well bs-sidebar" id="sidebar" style="background-color:#fff; height: 500px;"  >
+              <ul class="nav nav-pills nav-stacked">
+                  <li><h2> Promo. Filter</h2></li>
+                  <li>filter2</li>
+                  <li> </li>
+                  <li> </li>
+                  <li> </li>
 
-    <h1>{{restaurant.name}} Promotions</h1>
-      <h2><a href="{{restaurant.review_link}}" style="color:black" target="_blank">-Yelp Review</a></h2>
+              </ul>
+          </div> <!--well bs-sidebar affix-->
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center">
+            <h1>{{restaurant.name}} Promotions</h1>
+        <h2><a class = "btn btn-primary"href="{{restaurant.review_link}}">Yelp Review</a></h2>
         <p> -{{ restaurant.getCategory }}</p>
-    <hr>
-    <ul style="text-align: left">
-        {% for promo in restaurant.getPromotions %}
-            <li><h2>{{promo.title}}</h2></li>
-            <h3>Rating: {{ promo.rating }}/5</h3>
-            <ul>
-                <h3><li>{{promo.description}}</li></h3>
-            </ul>
-        {% endfor %}
-    </ul>
-      <hr><br>
-    <a href="{% url 'restaurant-update' restaurant.id %}" class="btn btn-primary" role="button">Edit Rest. Info</a>
-  {% endblock %}
+        <hr>
+        <ul style="text-align: left">
+            {% for promo in restaurant.getPromotions %}
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <li><h2><u>{{promo.title}}</u></h2>
+                            <ul>
+                                <h3><li>{{promo.description}}</li></h3>
+                            </ul>
+                        </div>
+                        <div class = "col-lg-3">
+                            <h4>Rating: {{ promo.rating }}/5</h4>
+                        </div>
+                        <div class="col-lg-4" align = "center">
+                            <a class = "btn btn-danger" href = {% url 'promotion-delete' promo.id %}>Delete</a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        </ul>
+        <br>
+        <a href="{% url 'restaurant-update' restaurant.id %}" class="btn btn-primary" role="button">Edit Rest. Info</a>
+        <a href="{% url 'addPromo' restaurant.id %}" class="btn btn-primary" role="button">+ Promo</a><br><br><br>
+        </div>
+    </div>
+
   </div>
+  {% endblock %}
+
 
 </body>
 
 
+</html>
