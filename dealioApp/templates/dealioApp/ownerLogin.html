@@ -7,16 +7,20 @@
 </head>
 
 <body style = "background-color: #2aabd2">
-
-{% block title %}Owner Login{% endblock %}
-
-{% block content %}
-  <h2>Owner Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
-{% endblock %}
+  {% block content %}
+  <div class="container-fluid" >
+    <h1>Create new business owner account</h1>
+    <form>
+      <br><input type = "text" name = "firstname" placeholder = "First Name"></input></br>
+      <br><input type = "text" name = "lastname" placeholder = "Last Name"></input></br>
+      <br><input type = "text" name = "business" placeholder = "Business Name"></input></br>
+      <br><input type = "text" name = "email" placeholder = "Email Address"></input></br>
+      <br><input type = "text" name = "password" placeholder = "Password"></input></br>
+      <br><input type = "text" name = "passwordConfirm" placeholder = "Confirm Password"></input></br>
+      <br></br>
+      <input type = "submit" value = "Submit"></input>
+    </form>
+  {% endblock %}
+  </div>
 
 </body>
