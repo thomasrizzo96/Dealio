@@ -222,12 +222,7 @@ tcl/
 /pip-selfcheck.json
 /Dealio/wsgi.py
 /Dealio/__init__.py
-/dealioApp/migrations/__init__.py
 /dealioApp/apps.py
-/dealioApp/migrations/0001_initial.py
-/dealioApp/migrations/0002_auto_20170224_2350.py
-/dealioApp/migrations/0003_auto_20170225_0236.py
-/dealioApp/migrations/0004_auto_20170225_0318.py
-/dealioApp/migrations/0005_auto_20170302_1853.py
+/dealioApp/migrations/
 /dealioApp/__init__.py
 /dealioApp/tests.py
