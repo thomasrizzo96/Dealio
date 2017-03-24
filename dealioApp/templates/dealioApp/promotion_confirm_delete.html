@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "dealioApp/home.html" %}
+</head>
+<body>
+    {% block content %}
+    <form action="" method="post" align="center" style="padding-top: 15%">
+        {% csrf_token %}
+        <h1>Are you sure you want to delete "{{ promotion }}"?</h1>
+        <input class = "btn btn-danger" type="submit" value="Confirm" />
+    </form>
+    {% endblock %}
+</body>
+</html>
