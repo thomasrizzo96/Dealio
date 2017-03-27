@@ -13,17 +13,19 @@
         <div class = "col-xs-4 col-sm-4 col-md-2 col-lg-2">
           <br><br><br>
           <div class="well bs-sidebar" id="sidebar" style="background-color:#fff; height: 500px;"  >
-              <form method="post" action="{% url 'promo_filtered' restaurant.id %}">
-{#                  Security Feature#}
-                  {% csrf_token %}
-                  <ul class="nav nav-pills nav-stacked">
+              <ul class="nav nav-pills nav-stacked">
+                  <form method="post" action="{% url 'promo_filtered' restaurant.id %}">
+                      {#                  Security Feature#}
+                      {% csrf_token %}
                       <li><h2> Promo. Filter</h2></li>
-                      <li><input type="radio" id="mostPopular" value="1" name="MostPopular"> Most Popular</li>
-                      <li><input type="radio" id="leastPopular" value="0" name="LeastPopular"> Least Popular</li>
+                      <li><input type="radio" id="mostPopular" value="1" name="filter">Most Popular</li>
+                      <br>
+                      <li><input type="radio" id="leastPopular" value="0" name="filter">Least Popular</li>
+                      <br><br>
                       <li><input type="submit" value="Apply Filters"></li>
                       <li><input type="reset" value="Reset Filters" ></li>
-                  </ul>
-              </form>
+                  </form>
+              </ul>
 
           </div> <!--well bs-sidebar affix-->
         </div>

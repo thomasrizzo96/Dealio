@@ -59,10 +59,12 @@ def is_filtered(request,restaurant_id):
     """
     restaurant = Restaurant.objects.get(id=restaurant_id)
     try:
-        if request.POST["MostPopular"] is '1':
+        if request.POST["filter"] is "1":
             restaurant.mostPop()
+        else:
+            restaurant.leastPop()
     except:
-        restaurant.leastPop()
+        return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
