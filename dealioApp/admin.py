@@ -1,5 +1,6 @@
 from django.contrib import admin
 from dealioApp.models import Promotion, Restaurant
+from dealioApp.models import UserProfile
 # Register your models here.
 
 
@@ -15,3 +16,4 @@ class PromotionAdmin(admin.ModelAdmin):
 
 admin.site.register(Promotion, PromotionAdmin)
 admin.site.register(Restaurant, RestaurantAdmin)
+admin.site.register(UserProfile)
