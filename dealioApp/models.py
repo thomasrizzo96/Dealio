@@ -44,6 +44,7 @@ class Restaurant(models.Model):
     proms = models.ManyToManyField(Promotion)
     category = models.CharField(max_length=10, choices=categoryOptions)
     review_link = models.CharField(max_length=50, unique=True)
+    promos = []
 
     def get_absolute_url(self):
         return reverse('promotions', args=(self.id,))
@@ -61,19 +62,37 @@ class Restaurant(models.Model):
     def addPromo(self, promo):
         self.proms.add(promo)
 
-    def getPromotions(self):
-        promos = []
+    def fillPromoList(self):
+        self.promos.clear()
         for i in range(0,self.proms.count()):
-            promos.append(self.proms.all()[i])
+            self.promos.append(self.proms.all()[i])
+
+    def getPromotions(self):
+        if len(self.promos) is 0:
+            self.fillPromoList()
+        return self.promos
+
+    def mostPop(self):
+        self.fillPromoList()
         finished = False
         while not finished:
             finished = True
-            for i in range(0,len(promos)):
-                if i + 1 < len(promos):
-                    if promos[i].rating < promos[i+1].rating:
-                        promos[i], promos[i+1] = promos[i+1], promos[i]
+            for i in range(0,len(self.promos)):
+                if i + 1 < len(self.promos):
+                    if self.promos[i].rating < self.promos[i+1].rating:
+                        self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
                         finished = False
-        return promos
+
+    def leastPop(self):
+        self.fillPromoList()
+        finished = False
+        while not finished:
+            finished = True
+            for i in range(0,len(self.promos)):
+                if i + 1 > len(self.promos):
+                    if self.promos[i].rating < self.promos[i+1].rating:
+                        self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
+                        finished = False
 
 
 class Owner(models.Model):
@@ -82,3 +101,6 @@ class Owner(models.Model):
 
     def __str__(self):
         return self.owner_id
+
+
+
