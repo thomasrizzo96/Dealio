@@ -51,4 +51,23 @@ def add_promo(request, restaurant_id):
 
 class delete_promo(DeleteView):
     model = Promotion
-    success_url = reverse_lazy('restaurants') 
+    success_url = reverse_lazy('restaurants')
+
+def is_filtered(request,restaurant_id):
+    """
+    Display appropriate promotions.
+    """
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+    try:
+        if request.POST["MostPopular"] is '1':
+            restaurant.mostPop()
+    except:
+        restaurant.leastPop()
+
+    return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
+
+def rest_filtered(request, restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+
+    return render(request, 'dealioApp/restaurants.html', {'restaurant': restaurant})
+

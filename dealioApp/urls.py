@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^ownerLogin$', auth_views.login, {'template_name': 'dealioApp\ownerLogin.html'}, name ='ownerLogin'),
     url(r'^ownerLogout/$', auth_views.logout, {'template_name': 'dealioApp\ownerLogout.html', 'next_page': '/'}, name='logout'),
     url(r'^placefinder$', views.placefinder, name='placefinder'),
+    url(r'^promo_filtered/(?P<restaurant_id>\d+)/$', views.is_filtered, name='promo_filtered'),
+    url(r'^rest_filtered/(?P<restaurant_id>\d+)/$', views.rest_filtered, name='rest_filtered'),
 ]
