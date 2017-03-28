@@ -18,12 +18,12 @@
                       {#                  Security Feature#}
                       {% csrf_token %}
                       <li><h2> Promo. Filter</h2></li>
+                      <li><a value="Reset Filters" href="{% url 'reset_promo_filtered' restaurant.id %}">Reset Filters </a></li>
                       <li><input type="radio" id="mostPopular" value="1" name="filter">Most Popular</li>
-                      <br>
                       <li><input type="radio" id="leastPopular" value="0" name="filter">Least Popular</li>
-                      <br><br>
+                      <br>
                       <li><input type="submit" value="Apply Filters"></li>
-                      <li><input type="reset" value="Reset Filters" ></li>
+                      <li><input type="reset" value="Reset Selection"></li>
                   </form>
               </ul>
 
