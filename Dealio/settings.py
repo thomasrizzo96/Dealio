@@ -29,6 +29,8 @@ ALLOWED_HOSTS = [
     '*.bestdealio.com',
     'bestdealio.com',
     'bestdealio.com/*',
+    '127.0.0.1',
+    'localhost'
 ]
 
 
