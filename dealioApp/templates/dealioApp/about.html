@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% extends "dealioApp/home.html" %}
+
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src ="{% static 'js/bootstrap.js'%}"></script>
+
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span>Menu</span>
+      </button>
+      <a class="navbar-brand" href="/">Dealio</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/restaurants">Restaurants</a></li>
+          <li><a href="{% url 'restaurant-add' %}">Create Rest.</a></li>
+        <li><a href="/admin">Admin Login</a></li>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+</head>
+
+<body style = "background-color: #2aabd2; overflow-y: scroll;">
+    {% block content %}
+    <div class = "container-fluid">
+      <div class="row">
+          <div align = "center" style="horiz-align: center; padding-top: 5%;">
+              <div class="container">
+                    <div class="row">
+                        <div class="heading-title text-center">
+                            <h2 class="text-uppercase">The Dealio Team </h2>
+                            <br></br>
+                            <p class="p-top-30 half-txt">What started as an idea for our CS3450: Software Engineering class at Utah State University quickly turned into reality as Austin, Thomas, Aaron, and Bobby set sights on creating a unique app to find the best deals in town.  </p>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3">
+                            <div class="team-member">
+                                <div class="team-img">
+
+                                    <img src="{% static "pictures/austin.jpg" %}" alt="team member" class="img-responsive">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>Austin Derbique</h4>
+                                        <p>Senior, Computer Science & Physics</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Originally from San Diego, Ca</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="team-member">
+                                <div class="team-img">
+                                    <img src="{% static "pictures/bobby.jpg" %}" alt="team member" class="img-responsive">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>Hello World</h4>
+                                        <p>I love to introduce myself as a hardcore Web Designer.</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Franklin Harbet</h5>
+                                <span>HR Manager</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="team-member">
+                                <div class="team-img">
+                                    <img src="https://image.freepik.com/free-photo/elegant-man-with-thumbs-up_1149-1595.jpg" alt="team member" class="img-responsive">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>Hello World</h4>
+                                        <p>I love to introduce myself as a hardcore Web Designer.</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Franklin Harbet</h5>
+                                <span>HR Manager</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="team-member">
+                                <div class="team-img">
+                                    <img src="https://image.freepik.com/free-photo/well-dressed-executive-with-crossed-arms_1098-3930.jpg" alt="team member" class="img-responsive">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>I love to design</h4>
+                                        <p>I love to introduce myself as a hardcore Web Designer.</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Linda Anderson</h5>
+                                <span>Marketing Manager</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+          </div>
+    </div>
+    {% endblock %}
+</body>
+
+
+</html>
