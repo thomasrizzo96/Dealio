@@ -83,15 +83,3 @@ class Owner(models.Model):
 
     def __str__(self):
         return self.owner_id
-
-# Class that extends the Django user account, will probably replace the Owner class
-
-class UserProfile(models.Model):
-    # link UserProfile with Django user
-    user = models.OneToOneField(User)
-
-    # additional attributes added to user functionality go below here
-
-
-    def __unicode__(self):
-        return self.user.username
