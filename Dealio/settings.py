@@ -123,8 +123,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Redirect business owner to home page after login
+#Redirect business owner to home page after login
 LOGIN_REDIRECT_URL = 'home'
-
-# Number of days that business owners have to verify their account via activation email
-ACCOUNT_ACTIVATION_DAYS = 7
