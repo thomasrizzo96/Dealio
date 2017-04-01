@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from . import views
 from django.contrib.auth import views as auth_views
 from dealioApp import views as core_views
@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^ownerLogout/$', auth_views.logout, {'template_name': 'dealioApp\ownerLogout.html', 'next_page': '/'}, name='logout'),
     url(r'^placefinder$', views.placefinder, name='placefinder'),
     url(r'^signup/$', core_views.signup, name='signup'),
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]
