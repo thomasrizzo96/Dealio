@@ -11,5 +11,9 @@ urlpatterns = [
     url(r'^restaurant/add/$', views.RestaurantCreate.as_view(), name='restaurant-add'),
     url(r'^restaurant/(?P<pk>\d+)/$', views.RestaurantUpdate.as_view(), name='restaurant-update'),
     url(r'^placefinder$', views.placefinder, name='placefinder'),
+    url(r'^promo_filtered/(?P<restaurant_id>\d+)/$', views.is_filtered, name='promo_filtered'),
+    url(r'^rest_filtered$', views.rest_filtered, name='rest_filtered'),
+    url(r'^reset_filtered/$', views.reset_filtered, name='reset_filtered'),
+    url(r'^reset_promo_filtered/(?P<restaurant_id>\d+)/$', views.reset_promo_filtered, name='reset_promo_filtered'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]

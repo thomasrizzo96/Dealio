@@ -53,3 +53,56 @@ def add_promo(request, restaurant_id):
 class delete_promo(DeleteView):
     model = Promotion
     success_url = reverse_lazy('restaurants')
+
+def is_filtered(request, restaurant_id):
+-    """
+-    Display appropriate promotions.
+-    """
+-    restaurant = Restaurant.objects.get(id=restaurant_id)
+-    try:
+-        if request.POST["filter"] is "1":
+-            restaurant.mostPop()
+-        else:
+-            restaurant.leastPop()
+-    except:
+-        return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
+-
+-    return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
+-
+-
+-# Restaurant filtering
+-def rest_filtered(request):
+-    restaurantList = Restaurant.objects.all()
+-    try:
+-        catList = request.POST.getlist('resFilter[]')
+-        for rest in restaurantList:
+-            if rest.category in catList:
+-                rest.set_filter_status(True)
+-            else:
+-                rest.set_filter_status(False)
+-    except:
+-        return render(request, 'dealioApp/restaurants.html', {'restaurants': restaurantList})
+-    return render(request, 'dealioApp/restaurants.html', {'restaurants': restaurantList})
+-
+-
+-# resets all previous restaurant filters by setting each restaurants filtering option to true
+-def reset_filtered(request):
+-    restaurantList = Restaurant.objects.all()
+-    try:
+-        for rest in restaurantList:
+-            rest.set_filter_status(True)
+-    except:
+-        return render(request, 'dealioApp/restaurants.html', {'restaurants': restaurantList})
+-    render(request, 'dealioApp/restaurants.html', {'restaurants': restaurantList})
+-    return HttpResponseRedirect('/restaurants')
+-
+-
+-#resets all promotional filters
+-def reset_promo_filtered(request, restaurant_id):
+-    restaurant = Restaurant.objects.get(id=restaurant_id)
+-    try:
+-       restaurant.fillPromoList()
+-    except:
+-        return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
+-
+-    return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})

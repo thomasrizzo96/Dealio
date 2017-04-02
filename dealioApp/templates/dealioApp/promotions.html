@@ -14,16 +14,22 @@
           <br><br><br>
           <div class="well bs-sidebar" id="sidebar" style="background-color:#fff; height: 500px;"  >
               <ul class="nav nav-pills nav-stacked">
-                  <li><h2> Promo. Filter</h2></li>
-                  <li>filter2</li>
-                  <li> </li>
-                  <li> </li>
-                  <li> </li>
-
+                  <form method="post" action="{% url 'promo_filtered' restaurant.id %}">
+                      {#                  Security Feature#}
+                      {% csrf_token %}
+                      <li><h2> Promo. Filter</h2></li>
+                      <li><a value="Reset Filters" href="{% url 'reset_promo_filtered' restaurant.id %}">Reset Filters </a></li>
+                      <li><input type="radio" id="mostPopular" value="1" name="filter">Most Popular</li>
+                      <li><input type="radio" id="leastPopular" value="0" name="filter">Least Popular</li>
+                      <br>
+                      <li><input type="submit" value="Apply Filters"></li>
+                      <li><input type="reset" value="Reset Selection"></li>
+                  </form>
               </ul>
+
           </div> <!--well bs-sidebar affix-->
         </div>
-        <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center">
+        <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center" id="popular">
             <h1>{{restaurant.name}} Promotions</h1>
         <h2><a class = "btn btn-primary"href="{{restaurant.review_link}}">Yelp Review</a></h2>
         <p> -{{ restaurant.getCategory }}</p>
