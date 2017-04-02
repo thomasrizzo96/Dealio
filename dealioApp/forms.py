@@ -5,4 +5,3 @@ class addPromo(ModelForm):
     class Meta:
         model = Promotion
         fields = ['title', 'description', 'rating']
-

@@ -101,6 +101,3 @@ class Owner(models.Model):
 
     def __str__(self):
         return self.owner_id
-
-
-

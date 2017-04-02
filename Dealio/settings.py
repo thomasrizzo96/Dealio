@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -127,5 +128,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#Redirect business owner to home page after login
-LOGIN_REDIRECT_URL = 'home'
+# Number of days that business owners have to verify their account via activation email
+ACCOUNT_ACTIVATION_DAYS = 7
+
+# Account registration email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'best.dealio.app@gmail.com'
+EMAIL_HOST_PASSWORD = '^B7GiF$IB2r8dct'
+SERVER_EMAIL = 'best.dealio.app@gmail.com'
+DEFAULT_FROM_EMAIL = "Dealio"
+
+# Site ID enabled
+SITE_ID = 1
