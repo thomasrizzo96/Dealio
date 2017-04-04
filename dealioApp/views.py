@@ -12,9 +12,6 @@ from django.views.generic.edit import CreateView, UpdateView
 def index(request):
     return render(request, 'dealioApp/home.html') #render looks in templates directory
 
-def about(request):
-    return render(request, 'dealioApp/about.html')
-
 
 def restaurants(request):
     restaurants = Restaurant.objects.all()
@@ -62,11 +59,8 @@ class delete_promo(DeleteView):
     model = Promotion
     success_url = reverse_lazy('restaurants')
 
-
+# Display appropriate restaurant
 def is_filtered(request, restaurant_id):
-    """
-    Display appropriate promotions.
-    """
     restaurant = Restaurant.objects.get(id=restaurant_id)
     try:
         if request.POST["filter"] is "1":
@@ -106,7 +100,7 @@ def reset_filtered(request):
     return HttpResponseRedirect('/restaurants')
 
 
-#resets all promotional filters
+# resets all promotional filters
 def reset_promo_filtered(request, restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)
     try:
