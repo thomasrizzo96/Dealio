@@ -12,6 +12,8 @@ from django.views.generic.edit import CreateView, UpdateView
 def index(request):
     return render(request, 'dealioApp/home.html') #render looks in templates directory
 
+def about(request):
+    return render(request, 'dealioApp/about.html')
 
 def restaurants(request):
     restaurants = Restaurant.objects.all()
