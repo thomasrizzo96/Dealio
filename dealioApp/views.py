@@ -61,7 +61,7 @@ class delete_promo(DeleteView):
     model = Promotion
     success_url = reverse_lazy('restaurants')
 
-# Display appropriate restaurant
+# Display appropriate Promotions
 def is_filtered(request, restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)
     try:
