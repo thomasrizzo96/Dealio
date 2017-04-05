@@ -143,3 +143,6 @@ DEFAULT_FROM_EMAIL = "Dealio"
 
 # Site ID enabled
 SITE_ID = 1
+
+# URL to redirect to after login
+LOGIN_REDIRECT_URL = '/'
