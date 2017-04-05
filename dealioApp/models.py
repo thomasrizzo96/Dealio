@@ -45,10 +45,13 @@ class Restaurant(models.Model):
     category = models.CharField(max_length=10, choices=categoryOptions)
     review_link = models.CharField(max_length=50, unique=True)
     promos = []
+    is_filtered = True
 
     def get_absolute_url(self):
         return reverse('promotions', args=(self.id,))
 
+    def set_filter_status(self, status):
+        self.is_filtered = status
 
     def __str__(self):
         return self.name
