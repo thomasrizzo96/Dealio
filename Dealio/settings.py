@@ -141,7 +141,7 @@ EMAIL_HOST_PASSWORD = '^B7GiF$IB2r8dct'
 SERVER_EMAIL = 'best.dealio.app@gmail.com'
 DEFAULT_FROM_EMAIL = "Dealio"
 
-# Site ID enabled
+# Site ID enabled - This should match the domain URL from admin->sites
 SITE_ID = 2
 
 # URL to redirect to after login
