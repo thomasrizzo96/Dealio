@@ -3,30 +3,76 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 
+# Review for promotion
+class Review(models.Model):
+    author = models.CharField(max_length=25, unique=True)
+    description = models.TextField(blank=True, null=True)
+    STARS = (
+        ('Rating:(1-5)', (
+            (1, 1),
+            (2, 2),
+            (3, 3),
+            (4, 4),
+            (5, 5),
+        )
+         ),
+    )
+    rating = models.IntegerField(choices=STARS, default=1, editable=True)
+
+    def __str__(self):
+        return self.author
+
+    def set_author(self, author):
+        self.author = author
+
+    def set_description(self, desc):
+        self.description = desc
+
+    def get_rating(self):
+        return self.rating
+
+
 # Create your models here.
 class Promotion(models.Model):
     title = models.CharField(max_length=25, unique=True)  # specify the models fields (data type) based on what django provides
     description = models.TextField(blank=True, null=True)
     STARS = (
         ('Rating:(1-5)', (
-            ('1', '1'),
-            ('2', '2'),
-            ('3', '3'),
-            ('4', '4'),
-            ('5', '5'),
+            (1, 1),
+            (2, 2),
+            (3, 3),
+            (4, 4),
+            (5, 5),
         )
          ),
     )
-    rating = models.CharField(max_length=1, choices=STARS, default=1)
+    rating = models.IntegerField(choices=STARS, default=1, editable=True)
+    review = models.ManyToManyField(Review)
+    reviewNum = Review.objects.count()
 
     def __str__(self):
         return self.title
+
     def set_title(self, title):
         self.title = title
+
     def set_description(self, desc):
         self.description = desc
+
     def set_rating(self, rating):
         self.rating = rating
+
+    def addReview(self, review):
+        self.review.add(review)
+
+    def getNumReviews(self):
+        return self.reviewNum
+
+    def getReviews(self):
+        lst = []
+        for i in range(0, self.review.count()):
+            lst.append(self.review.all()[i])
+        return lst
 
 
 class Restaurant(models.Model):

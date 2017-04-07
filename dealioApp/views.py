@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from dealioApp.models import Restaurant
 from dealioApp.models import Promotion
+from dealioApp.models import Review
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from dealioApp.forms import addPromo
+from dealioApp.forms import addPromo, addReview
 from django.views.generic.edit import CreateView, UpdateView
 # Create your views here.
 
@@ -22,6 +23,7 @@ def restaurants(request):
 
 def promotions(request, restaurant_id):#pass in a restaurant's id into this view to access its promotions via getPromotions
     restaurant = Restaurant.objects.get(id=restaurant_id)
+    restaurant.fillPromoList()
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
 
@@ -54,7 +56,7 @@ def add_promo(request, restaurant_id):
         return HttpResponseRedirect('/promotions/' + restaurant_id)
     else:
         form = addPromo()
-    return render(request, 'dealioApp/addPromo.html', {'form':form})
+    return render(request, 'dealioApp/addPromo.html', {'form': form})
 
 
 class delete_promo(DeleteView):
@@ -111,3 +113,24 @@ def reset_promo_filtered(request, restaurant_id):
         return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
+
+# add new review to promotion
+def new_review(request, promo_id):
+    promo = Promotion.objects.get(id=promo_id)
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = addReview(request.POST)
+        if form.is_valid():
+            newRev = form.save()
+            promo.addReview(newRev)
+        return HttpResponseRedirect('/promotions/' + promo_id)
+    else:
+        form = addReview()
+    return render(request, 'dealioApp/addReview.html', {'form': form})
+
+#displays review
+def display_reviews(request, promo_id):
+    promo = Promotion.objects.get(id=promo_id)
+    return render(request, 'dealioApp/reviews.html', {'promotion': promo})
+
+

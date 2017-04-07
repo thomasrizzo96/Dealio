@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% extends "dealioApp/home.html" %}
+
+</head>
+
+<body style = "background-color: #2aabd2">
+
+{% block content %}
+    <h1>{{ promotion.title }}</h1>
+    {% if promotion.review.all.count is 0 %}
+        <h3>No Reviews At This Time!</h3>
+    {% endif %}
+    <ul>
+        {% if promotion.review.all.count > 0 %}
+            {% for rev in promotion.getReviews %}
+                <li> Author: {{ rev.author }}: </li>
+                <p>Description: {{ rev.description }}</p>
+                <p>Rating: {{ rev.rating }}/5</p>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    {% endblock %}
+
+</body>
+</html>
