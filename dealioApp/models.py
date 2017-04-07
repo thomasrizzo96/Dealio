@@ -48,7 +48,7 @@ class Promotion(models.Model):
     )
     rating = models.IntegerField(choices=STARS, default=1, editable=True)
     review = models.ManyToManyField(Review)
-    reviewNum = Review.objects.count()
+    # reviewNum = Review.objects.count()
 
     def __str__(self):
         return self.title
