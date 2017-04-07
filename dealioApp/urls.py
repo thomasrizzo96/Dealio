@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^reset_filtered/$', views.reset_filtered, name='reset_filtered'),
     url(r'^reset_promo_filtered/(?P<restaurant_id>\d+)/$', views.reset_promo_filtered, name='reset_promo_filtered'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
+    url(r'^promotion_review/(?P<promo_id>\d+)/$', views.new_review, name='promotion-review'),
+    url(r'^promotion_reviewList/(?P<promo_id>\d+)/$', views.display_reviews, name='promotion-reviewList'),
 ]

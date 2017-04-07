@@ -15,7 +15,7 @@
           <div class="well bs-sidebar" id="sidebar" style="background-color:#fff; height: 500px;"  >
               <ul class="nav nav-pills nav-stacked">
                   <form method="post" action="{% url 'promo_filtered' restaurant.id %}">
-                      {#                  Security Feature#}
+                      {#Security Feature#}
                       {% csrf_token %}
                       <li><h2> Promo. Filter</h2></li>
                       <li><a value="Reset Filters" href="{% url 'reset_promo_filtered' restaurant.id %}">Reset Filters </a></li>
@@ -46,9 +46,13 @@
                         </div>
                         <div class = "col-lg-3">
                             <h4>Rating: {{ promo.rating }}/5</h4>
+                            <a href = {% url 'promotion-reviewList' promo.id %}>{{ promo.review.all.count }} reviews</a>
+
                         </div>
                         <div class="col-lg-4" align = "center">
                             <a class = "btn btn-danger" href = {% url 'promotion-delete' promo.id %}>Delete</a>
+                            <br>
+                            <a class="btn btn-default" role="button" href = {% url 'promotion-review' promo.id %}>Add Review</a>
                         </div>
                     </div>
                 </div>
