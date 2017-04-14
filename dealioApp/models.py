@@ -53,10 +53,10 @@ class Promotion(models.Model):
     owner_id = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     description = models.TextField()
-    picture = models.TextField
+    picture = models.TextField()
     rating = models.CharField(max_length=5)
-    num_ratings = models.IntegerField
-    promotion_type = models.TextField
+    num_ratings = models.IntegerField()
+    promotion_type = models.TextField()
 
     def __str__(self):
         return self.title
@@ -118,24 +118,21 @@ class Restaurant(models.Model):
             )
          ),
     )
-    #name = models.CharField(max_length=50)
+
     proms = models.ManyToManyField(Promotion)
-    #category = models.CharField(max_length=10, choices=categoryOptions)
-    #category = 'Mexican'
-    #yelp = models.TextField()
     promos = []
     is_filtered = True
 
-    owner_number = models.IntegerField
+    owner_number = models.IntegerField()
     name = models.CharField(max_length=50)
-    description = models.TextField
+    description = models.TextField()
     phone_number = models.CharField(max_length=25)
     email_address = models.CharField(max_length=30)
     website= models.CharField(max_length=75)
     picture = models.CharField(max_length=50)
-    category = models.TextField
+    category = models.TextField()
     rating = models.CharField(max_length=5)
-    yelp = models.TextField
+    yelp = models.TextField()
 
     def set_owner_number(self, owner_number):
         self.owner_number = owner_number
