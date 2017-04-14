@@ -33,12 +33,12 @@ def ownerSignUp(request):
 
 class RestaurantCreate(CreateView):
     model = Restaurant
-    fields = ['name', 'category', 'review_link']
+    fields = ['owner_number','name','description','phone_number','email_address','website','picture', 'category','rating','yelp']
 
 
 class RestaurantUpdate(UpdateView):
     model = Restaurant
-    fields = ['name', 'category', 'review_link']
+    fields = ['owner_number', 'name', 'description', 'phone_number', 'email_address', 'website', 'picture', 'category','rating', 'yelp']
 
 
 def placefinder(request):

@@ -34,8 +34,8 @@ class Review(models.Model):
 
 # Create your models here.
 class Promotion(models.Model):
-    title = models.CharField(max_length=25, unique=True)  # specify the models fields (data type) based on what django provides
-    description = models.TextField(blank=True, null=True)
+    #title = models.CharField(max_length=25, unique=True)  # specify the models fields (data type) based on what django provides
+    #description = models.TextField(blank=True, null=True)
     STARS = (
         ('Rating:(1-5)', (
             (1, 1),
@@ -46,9 +46,17 @@ class Promotion(models.Model):
         )
          ),
     )
-    rating = models.IntegerField(choices=STARS, default=1, editable=True)
+    #rating = models.IntegerField(choices=STARS, default=1, editable=True)
     review = models.ManyToManyField(Review)
     reviewNum = Review.objects.count()
+
+    owner_id = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    picture = models.TextField
+    rating = models.CharField(max_length=5)
+    num_ratings = models.IntegerField
+    promotion_type = models.TextField
 
     def __str__(self):
         return self.title
@@ -59,20 +67,44 @@ class Promotion(models.Model):
     def set_description(self, desc):
         self.description = desc
 
+    def set_picture(self, pic):
+        self.picture = pic
+
     def set_rating(self, rating):
         self.rating = rating
 
-    def addReview(self, review):
-        self.review.add(review)
+    def set_num_ratings(self, num_ratings):
+        self.num_ratings = num_ratings
 
-    def getNumReviews(self):
-        return self.reviewNum
+    def set_promotion_type(self, prom):
+        self.promotion_type = prom
 
-    def getReviews(self):
-        lst = []
-        for i in range(0, self.review.count()):
-            lst.append(self.review.all()[i])
-        return lst
+    def get_title(self):
+        return self.title
+
+    def get_description(self):
+        return self.description
+
+    def get_picture(self):
+        return self.picture
+
+    def get_rating(self):
+        return self.rating
+
+    def get_num_ratings(self):
+        return self.num_ratings
+
+    #def addReview(self, review):
+    #    self.review.add(review)
+
+    #def getNumReviews(self):
+    #    return self.reviewNum
+
+    #def getReviews(self):
+    #    lst = []
+    #   for i in range(0, self.review.count()):
+    #        lst.append(self.review.all()[i])
+    #    return lst
 
 
 class Restaurant(models.Model):
@@ -86,12 +118,85 @@ class Restaurant(models.Model):
             )
          ),
     )
-    name = models.CharField(max_length=25, unique=True)
+    #name = models.CharField(max_length=50)
     proms = models.ManyToManyField(Promotion)
-    category = models.CharField(max_length=10, choices=categoryOptions)
-    review_link = models.CharField(max_length=50, unique=True)
+    #category = models.CharField(max_length=10, choices=categoryOptions)
+    #category = 'Mexican'
+    #yelp = models.TextField()
     promos = []
     is_filtered = True
+
+    owner_number = models.IntegerField
+    name = models.CharField(max_length=50)
+    description = models.TextField
+    phone_number = models.CharField(max_length=25)
+    email_address = models.CharField(max_length=30)
+    website= models.CharField(max_length=75)
+    picture = models.CharField(max_length=50)
+    category = models.TextField
+    rating = models.CharField(max_length=5)
+    yelp = models.TextField
+
+    def set_owner_number(self, owner_number):
+        self.owner_number = owner_number
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_description(self, description):
+        self.description = description
+
+    def set_phone_number(self, phone_number):
+        self.phone_number = phone_number
+
+    def set_email_address(self, email_address):
+        self.email_address = email_address
+
+    def set_website(self, website):
+        self.website = website
+
+    def set_picture(self, picture):
+        self.picture = picture
+
+    def set_category(self, category):
+        self.category = category
+
+    def set_rating(self, rating):
+        self.rating = rating
+
+    def set_yelp(self, yelp):
+        self.yelp = yelp
+
+    def get_owner_number(self):
+        return self.owner_number
+
+    def get_name(self):
+        return self.name
+
+    def get_description(self):
+        return self.description
+
+    def get_phone_number(self):
+        return self.phone_number
+
+    def get_email_address(self):
+        return self.email_address
+
+    def get_website(self):
+        return self.website
+
+    def get_picture(self):
+        return self.picture
+    def get_category(self):
+        return self.category
+
+    def get_rating(self):
+        return self.rating
+
+    def get_yelp(self):
+        return self.yelp
+
+
 
     def get_absolute_url(self):
         return reverse('promotions', args=(self.id,))
@@ -101,12 +206,6 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_review_link(self):
-        return self.review_link
-
-    def getCategory(self):
-        return self.category
 
     def addPromo(self, promo):
         self.proms.add(promo)
