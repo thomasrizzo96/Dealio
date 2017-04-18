@@ -123,6 +123,7 @@ class Restaurant(models.Model):
     promos = []
     is_filtered = True
 
+    google_id = models.IntegerField()
     owner_number = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField()
@@ -238,6 +239,8 @@ class Restaurant(models.Model):
                     if self.promos[i].rating < self.promos[i+1].rating:
                         self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
                         finished = False
+
+
 
 
 class Owner(models.Model):
