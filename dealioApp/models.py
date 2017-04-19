@@ -94,17 +94,17 @@ class Promotion(models.Model):
     def get_num_ratings(self):
         return self.num_ratings
 
-    #def addReview(self, review):
-    #    self.review.add(review)
+    def addReview(self, review):
+        self.review.add(review)
 
-    #def getNumReviews(self):
-    #    return self.reviewNum
+    def getNumReviews(self):
+        return self.reviewNum
 
-    #def getReviews(self):
-    #    lst = []
-    #   for i in range(0, self.review.count()):
-    #        lst.append(self.review.all()[i])
-    #    return lst
+    def getReviews(self):
+        lst = []
+        for i in range(0, self.review.count()):
+            lst.append(self.review.all()[i])
+        return lst
 
 
 class Restaurant(models.Model):

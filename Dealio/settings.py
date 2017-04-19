@@ -146,7 +146,6 @@ SITE_ID = 2
 
 # URL to redirect to after login
 LOGIN_REDIRECT_URL = '/'
-=======
 """
 Django settings for Dealio project.
 
