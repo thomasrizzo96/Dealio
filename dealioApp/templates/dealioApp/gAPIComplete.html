@@ -91,6 +91,41 @@
               }
             }
           }
+          function getCoords() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                  lat = position.coords.latitude
+                  lng = position.coords.longitude
+                  coordString = lat + ',' + lng
+                  console.log(string)
+              });
+            }
+            post('/restaurants', {apiCoords: coordString});
+          }
+          function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+    form.setAttribute("CSRF", {% csrf_token %});
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
           // Bias the autocomplete object to the user's geographical location,
           // as supplied by the browser's 'navigator.geolocation' object.
           function geolocate() {
@@ -112,6 +147,8 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo&libraries=places&callback=initAutocomplete"
             async defer></script>
 	</div>
+    <button type="button" onclick="getCoords()">Submit!</button>
+
 </head>
 <body>
 
