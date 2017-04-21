@@ -112,7 +112,6 @@
     form.setAttribute("action", path);
     form.setAttribute('name', 'csrfmiddlewaretoken');
     form.setAttribute('X-CSRFToken', '{{ csrf_token }}');
-    form.setAttribute('{{csrf_token}}')
 
 
     for(var key in params) {

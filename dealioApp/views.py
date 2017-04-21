@@ -7,15 +7,15 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from dealioApp.forms import addPromo, addReview
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
-
 
 def index(request):
     return render(request, 'dealioApp/home.html') #render looks in templates directory
 
 def about(request):
     return render(request, 'dealioApp/about.html')
-
+@csrf_exempt
 def restaurants(request):
     restaurants = Restaurant.objects.all()
     return render(request, 'dealioApp/restaurants.html', {'restaurants': restaurants}) #render looks in templates directory #can pass in content into render() such as dictionaries
