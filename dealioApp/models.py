@@ -225,7 +225,7 @@ class Restaurant(models.Model):
             finished = True
             for i in range(0, len(self.promos)):
                 if i + 1 < len(self.promos):
-                    if self.promos[i].rating > self.promos[i + 1].rating:
+                    if self.promos[i].rating < self.promos[i + 1].rating:
                         self.promos[i], self.promos[i + 1] = self.promos[i + 1], self.promos[i]
                         finished = False
 
