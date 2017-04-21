@@ -53,10 +53,10 @@ class Promotion(models.Model):
     owner_id = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     description = models.TextField()
-    picture = models.TextField
+    picture = models.TextField()
     rating = models.CharField(max_length=5)
-    num_ratings = models.IntegerField
-    promotion_type = models.TextField
+    num_ratings = models.IntegerField()
+    promotion_type = models.TextField()
 
     def __str__(self):
         return self.title
@@ -94,17 +94,17 @@ class Promotion(models.Model):
     def get_num_ratings(self):
         return self.num_ratings
 
-    #def addReview(self, review):
-    #    self.review.add(review)
+    def addReview(self, review):
+        self.review.add(review)
 
-    #def getNumReviews(self):
-    #    return self.reviewNum
+    def getNumReviews(self):
+        return self.reviewNum
 
-    #def getReviews(self):
-    #    lst = []
-    #   for i in range(0, self.review.count()):
-    #        lst.append(self.review.all()[i])
-    #    return lst
+    def getReviews(self):
+        lst = []
+        for i in range(0, self.review.count()):
+            lst.append(self.review.all()[i])
+        return lst
 
 
 class Restaurant(models.Model):
@@ -118,24 +118,22 @@ class Restaurant(models.Model):
             )
          ),
     )
-    #name = models.CharField(max_length=50)
+
     proms = models.ManyToManyField(Promotion)
-    #category = models.CharField(max_length=10, choices=categoryOptions)
-    #category = 'Mexican'
-    #yelp = models.TextField()
     promos = []
     is_filtered = True
 
-    owner_number = models.IntegerField
+    google_id = models.IntegerField()
+    owner_number = models.IntegerField()
     name = models.CharField(max_length=50)
-    description = models.TextField
+    description = models.TextField()
     phone_number = models.CharField(max_length=25)
     email_address = models.CharField(max_length=30)
     website= models.CharField(max_length=75)
     picture = models.CharField(max_length=50)
-    category = models.TextField
+    category = models.TextField()
     rating = models.CharField(max_length=5)
-    yelp = models.TextField
+    yelp = models.TextField()
 
     def set_owner_number(self, owner_number):
         self.owner_number = owner_number
@@ -241,6 +239,8 @@ class Restaurant(models.Model):
                     if self.promos[i].rating < self.promos[i+1].rating:
                         self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
                         finished = False
+
+
 
 
 class Owner(models.Model):

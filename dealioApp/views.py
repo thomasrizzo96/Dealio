@@ -22,7 +22,7 @@ def restaurants(request):
 
 
 def promotions(request, restaurant_id):#pass in a restaurant's id into this view to access its promotions via getPromotions
-    restaurant = Restaurant.objects.get(id=restaurant_id)
+    restaurant = Restaurant.objects.get(id = restaurant_id)
     restaurant.fillPromoList()
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
