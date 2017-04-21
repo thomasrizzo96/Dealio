@@ -46,7 +46,7 @@ class Promotion(models.Model):
         )
          ),
     )
-    #rating = models.IntegerField(choices=STARS, default=1, editable=True)
+    rating = models.IntegerField(choices=STARS, default=1, editable=True)
     review = models.ManyToManyField(Review)
     reviewNum = Review.objects.count()
 
@@ -54,8 +54,8 @@ class Promotion(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     picture = models.TextField()
-    rating = models.CharField(max_length=5)
-    num_ratings = models.IntegerField()
+    # rating = models.CharField(max_length=5)
+    num_ratings = models.IntegerField(default=0)
     promotion_type = models.TextField()
 
     def __str__(self):
@@ -185,6 +185,7 @@ class Restaurant(models.Model):
 
     def get_picture(self):
         return self.picture
+
     def get_category(self):
         return self.category
 
@@ -193,8 +194,6 @@ class Restaurant(models.Model):
 
     def get_yelp(self):
         return self.yelp
-
-
 
     def get_absolute_url(self):
         return reverse('promotions', args=(self.id,))
@@ -210,7 +209,7 @@ class Restaurant(models.Model):
 
     def fillPromoList(self):
         self.promos.clear()
-        for i in range(0,self.proms.count()):
+        for i in range(0, self.proms.count()):
             self.promos.append(self.proms.all()[i])
 
     def getPromotions(self):
@@ -221,12 +220,13 @@ class Restaurant(models.Model):
     def mostPop(self):
         self.fillPromoList()
         finished = False
+
         while not finished:
             finished = True
-            for i in range(0,len(self.promos)):
+            for i in range(0, len(self.promos)):
                 if i + 1 < len(self.promos):
-                    if self.promos[i].rating < self.promos[i+1].rating:
-                        self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
+                    if self.promos[i].rating > self.promos[i + 1].rating:
+                        self.promos[i], self.promos[i + 1] = self.promos[i + 1], self.promos[i]
                         finished = False
 
     def leastPop(self):
@@ -234,7 +234,7 @@ class Restaurant(models.Model):
         finished = False
         while not finished:
             finished = True
-            for i in range(0,len(self.promos)):
+            for i in range(0, len(self.promos)):
                 if i + 1 > len(self.promos):
                     if self.promos[i].rating < self.promos[i+1].rating:
                         self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
