@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    {% extends "dealioApp/home.html" %}
+
+
+</head>
+
+<body style="background-color: #2aabd2">
+{% block content %}
+    <div class="container-fluid" style="margin-top: 5%">
+        <div class="row" align="center">
+            <h1>Share This Deal!</h1>
+        </div>
+        <div class="row" align="center" style="margin-top: 10%">
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" align="right">
+                    <h2>Enter Email</h2>
+                    <input type="email" name="email">
+                    <button type="submit" class="btn btn-success">Share</button>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" align="center">
+                    <h2>OR</h2>
+                </div>
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" align="left">
+                    <h2>Enter Phone Number</h2>
+                    <input type="tel" name="number">
+                    <button type="submit" class="btn btn-success">Share</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+</body>
+
+
+</html>

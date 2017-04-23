@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from dealioApp.forms import addPromo, addReview
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import csrf_exempt
+from dealioApp.email_text import send_promo_email, send_promo_text
+
 # Create your views here.
 
 def index(request):
@@ -137,5 +139,20 @@ def new_review(request, promo_id):
 def display_reviews(request, promo_id):
     promo = Promotion.objects.get(id=promo_id)
     return render(request, 'dealioApp/reviews.html', {'promotion': promo})
+
+#share a promo via email or text
+def share_promo(request, promo_id):
+    promo = Promotion.objects.get(id=promo_id)
+    if request.method == 'POST':
+        number = request.POST['number']
+        email = request.POST['email']
+
+        if email != '':
+            send_promo_email(email, promo.title, promo.description)
+        if number != '':
+            send_promo_text(number, promo.title, promo.description)
+        return HttpResponseRedirect('/promotions/' + str(promo.id))
+
+    return render(request, 'dealioApp/share_promo.html')
 
 
