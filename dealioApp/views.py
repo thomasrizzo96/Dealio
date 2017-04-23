@@ -11,7 +11,12 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def index(request):
-    return render(request, 'dealioApp/home.html') #render looks in templates directory
+        if request.method == 'POST':
+        location = request.POST['location'] #this is a string with the lat and lon seperated by a space. call print(location) if you would like to test.
+
+        return HttpResponseRedirect('restaurants')
+
+    return render(request, 'dealioApp/home.html')
 
 def about(request):
     return render(request, 'dealioApp/about.html')
