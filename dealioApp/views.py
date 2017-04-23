@@ -3,7 +3,7 @@ from dealioApp.models import Restaurant
 from dealioApp.models import Promotion
 from dealioApp.models import Review
 from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from dealioApp.forms import addPromo, addReview
 from django.views.generic.edit import CreateView, UpdateView
@@ -66,10 +66,13 @@ def add_promo(request, restaurant_id):
     return render(request, 'dealioApp/addPromo.html', {'form': form})
 
 
-class delete_promo(DeleteView):
-    model = Promotion
-    success_url = reverse_lazy('restaurants')
+def delete_promo(request, promo_id, restaurant_id):
+    promo = Promotion.objects.get(id=promo_id)
+    if request.method == 'POST':
+        promo.delete()
+        return HttpResponseRedirect('/promotions/' + restaurant_id)
 
+    return render(request, 'dealioApp/promotion_confirm_delete.html', {'restaurant_id': restaurant_id})
 # Display appropriate Promotions
 def is_filtered(request, restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)
