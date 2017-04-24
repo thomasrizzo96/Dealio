@@ -13,7 +13,7 @@ from dealioApp.email_text import send_promo_email, send_promo_text
 # Create your views here.
 
 def index(request):
-        if request.method == 'POST':
+    if request.method == 'POST':
         location = request.POST['location'] #this is a string with the lat and lon seperated by a space. call print(location) if you would like to test.
 
         return HttpResponseRedirect('restaurants')
