@@ -193,6 +193,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'dealioApp',
+    'user_profile',
 ]
 
 MIDDLEWARE = [

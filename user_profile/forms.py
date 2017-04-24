@@ -5,4 +5,4 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('user',)
-        fields = ['owner_id']
+        fields = ['owner_id', 'restaurants']
