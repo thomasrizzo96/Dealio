@@ -51,8 +51,10 @@
                         </div>
                         <div class="col-lg-4" align = "center">
                             <a class = "btn btn-danger" href = {% url 'promotion-delete' promo.id %}>Delete</a>
-                            <br>
+                            <br> <br>
                             <a class="btn btn-default" role="button" href = {% url 'promotion-review' promo.id %}>Add Review</a>
+			    <br> <br>
+			    <a class = "btn btn-success" href = {% url 'share_promo' promo.id %}>Share</a>
                         </div>
                     </div>
                 </div>
