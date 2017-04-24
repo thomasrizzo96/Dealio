@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from dealioApp.models import *
+from dealioApp.models import Restaurant
 
 # Create your models here.
 

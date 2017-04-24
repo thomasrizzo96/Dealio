@@ -50,7 +50,7 @@
 
                         </div>
                         <div class="col-lg-4" align = "center">
-                            <a class = "btn btn-danger" href = {% url 'promotion-delete' promo.id %}>Delete</a>
+                            <a class = "btn btn-danger" href = {% url 'promotion-delete' restaurant.id promo.id %}>Delete</a>
                             <br>
                             <a class="btn btn-default" role="button" href = {% url 'promotion-review' promo.id %}>Add Review</a>
                         </div>
