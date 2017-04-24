@@ -80,7 +80,7 @@ def populate_database(p_locationLat,p_locationLong):
     
         cursor = connection.cursor()
     
-        print("Now trying to write to database")
+        #print("Now trying to write to database")
 
         for er in search_results:
             lat = er['geometry']['location']['lat']
@@ -100,28 +100,28 @@ def populate_database(p_locationLat,p_locationLong):
             picture = "To be implemented"
             rating = er['rating']
             yelp = yelpURL
+            print("Yelp Website: " + yelp)
 
             category = ""
             for i in er['types']:
                 category +=i + ','
-
-            print("Writing " + name + " to Database")
             
             try:
                 find_string = "SELECT * FROM 'dealioApp_restaurant' WHERE google_id ='" + unique_id + "' LIMIT 1;"
                 cursor.execute(find_string)
                 results = cursor.fetchall()
-                print(results)
+                #print(results)
                 if len(results)==0:
-                    print("Could not find in database. Writing now...")
-                    print(cursor.lastrowid)
-                    string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
+                    print(name + " was not in database. Inserting now.")
+                    
+                    string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
 
                     #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
-                    print(string)
+                    #print(string)
                     cursor.execute(string)
                     connection.commit()
                 else:
+                    print(name + " is already in database. Skipping entry...")
                     continue
             
             except sqlite3.Error as e:
@@ -152,7 +152,7 @@ import rauth #Used for the Yelp URL API
 def get_search_parameters(lat,lng):
   #See the Yelp API for more details
   params = {}
-  params["term"] = searchKeyWord
+  params["term"] = '' #change this to serach for keyword
   params["ll"] = "{},{}".format(str(lat),str(lng))
   params["radius_filter"] = "30"
   params["limit"] = "20"
