@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
     {% extends "dealioApp/home.html" %}
+
 </head>
 <body>
     {% block content %}
-    <form action="" method="post" align="center" style="padding-top: 15%">
-        {% csrf_token %}
-        <h1>Are you sure you want to delete "{{ promotion }}"?</h1>
-        <input class = "btn btn-danger" type="submit" value="Confirm" />
-    </form>
+    <div class="container-fluid" style="margin-top: 5%">
+        <div class="row" align="center" style="margin-top: 10%">
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h1>Are you sure you would like to delete this deal?</h1>
+                    <input  type="hidden" name="confirm" id="confirm">
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                    <a href= "{% url 'promotions'  restaurant_id %}" class="btn btn-success">No</a>
+                </div>
+            </form>
+            <br>
+
+        </div>
+    </div>
     {% endblock %}
 </body>
 </html>
