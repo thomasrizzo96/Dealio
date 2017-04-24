@@ -3,19 +3,26 @@ from dealioApp.models import Restaurant
 from dealioApp.models import Promotion
 from dealioApp.models import Review
 from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from dealioApp.forms import addPromo, addReview
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.decorators.csrf import csrf_exempt
+from dealioApp.email_text import send_promo_email, send_promo_text
+
 # Create your views here.
 
-
 def index(request):
-    return render(request, 'dealioApp/home.html') #render looks in templates directory
+    if request.method == 'POST':
+        location = request.POST['location'] #this is a string with the lat and lon seperated by a space. call print(location) if you would like to test.
+
+        return HttpResponseRedirect('restaurants')
+
+    return render(request, 'dealioApp/home.html')
 
 def about(request):
     return render(request, 'dealioApp/about.html')
-
+@csrf_exempt
 def restaurants(request):
     restaurants = Restaurant.objects.all()
     return render(request, 'dealioApp/restaurants.html', {'restaurants': restaurants}) #render looks in templates directory #can pass in content into render() such as dictionaries
@@ -26,6 +33,17 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
     restaurant.fillPromoList()
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
+
+@csrf_exempt
+def compute_restaurants(request):
+    if request.method == "POST":
+        res = request.GET['apiCoords']
+        print(res)
+    # do something if form is valid
+    context = {
+
+    }
+    return render(request, "dealioApp/restaurant_form.html", context)
 
 def ownerSignUp(request):
     return render(request, 'dealioApp/ownerSignUp.html')
@@ -59,10 +77,13 @@ def add_promo(request, restaurant_id):
     return render(request, 'dealioApp/addPromo.html', {'form': form})
 
 
-class delete_promo(DeleteView):
-    model = Promotion
-    success_url = reverse_lazy('restaurants')
+def delete_promo(request, promo_id, restaurant_id):
+    promo = Promotion.objects.get(id=promo_id)
+    if request.method == 'POST':
+        promo.delete()
+        return HttpResponseRedirect('/promotions/' + restaurant_id)
 
+    return render(request, 'dealioApp/promotion_confirm_delete.html', {'restaurant_id': restaurant_id})
 # Display appropriate Promotions
 def is_filtered(request, restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)
@@ -132,5 +153,20 @@ def new_review(request, promo_id):
 def display_reviews(request, promo_id):
     promo = Promotion.objects.get(id=promo_id)
     return render(request, 'dealioApp/reviews.html', {'promotion': promo})
+
+#share a promo via email or text
+def share_promo(request, promo_id):
+    promo = Promotion.objects.get(id=promo_id)
+    if request.method == 'POST':
+        number = request.POST['number']
+        email = request.POST['email']
+
+        if email != '':
+            send_promo_email(email, promo.title, promo.description)
+        if number != '':
+            send_promo_text(number, promo.title, promo.description)
+        return HttpResponseRedirect('/promotions/' + str(promo.id))
+
+    return render(request, 'dealioApp/share_promo.html')
 
 
