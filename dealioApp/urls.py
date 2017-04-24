@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^promotion_review/(?P<promo_id>\d+)/$', views.new_review, name='promotion-review'),
     url(r'^promotion_reviewList/(?P<promo_id>\d+)/$', views.display_reviews, name='promotion-reviewList'),
+    url(r'^user/', include('user_profile.urls')),
 ]
