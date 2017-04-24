@@ -100,7 +100,7 @@
                   console.log(string)
               });
             }
-            post('/restaurants', {apiCoords: coordString});
+            post('/compute_restaurants/', {apiCoords: coordString});
           }
           function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.

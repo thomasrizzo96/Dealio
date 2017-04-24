@@ -27,6 +27,17 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
 
+@csrf_exempt
+def compute_restaurants(request):
+    if request.method == "POST":
+        res = request.GET['apiCoords']
+        print(res)
+    # do something if form is valid
+    context = {
+
+    }
+    return render(request, "dealioApp/restaurant_form.html", context)
+
 def ownerSignUp(request):
     return render(request, 'dealioApp/ownerSignUp.html')
 
