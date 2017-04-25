@@ -43,34 +43,49 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
 @csrf_exempt
 def compute_restaurants(request):
     restaurants = Restaurant.objects.all()
+
     #print(result_list)
     try:
         location = request.POST['apiCoords']
         lat,lng = location.split(",")
         p_locationLat = lat
         p_locationLong = lng
-        p_radius = 50000
+        p_radius = 5
         p_searchType = 'restaurant'
         p_searchKeyWord = "mexican"
         p_numResults = 25
 
         results = retrieve_results(p_locationLat, p_locationLong, p_radius, p_searchType, p_searchKeyWord, p_numResults)
-        #log.debug(results[0])
+        #log.error(results)
+
+        #result_list = Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant' LIMIT 1")
+        result_list = list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1"))
+        result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='d08ba7f48795e44a825b8e8a54d04756468ab997' LIMIT 1"))
 
 
-        result_list = set()
-        for key, value in results:
-            currQuery = Restaurant.objects.raw("""SELECT google_id FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1""")[0]
-            log.debug(currQuery)
-            if len(currQuery) == 0:
-                continue
+        #lolol = Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant' LIMIT 15") #this one works!
+        for key, value in results.items():
+            #log.error(str(key) + " , " + value)
+            currQuery = Restaurant.objects.raw("""SELECT google_id FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1""")
+            #log.error(str(currQuery))
+       #     log.debug(currQuery)
+            if len(str(currQuery)) == 0:
+                log.error("Could not find restaurant in database...")
             else:
-                result_list.add(Restaurant.objects.raw("""SELECT * FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1"""))[0]
-                log.debug(result_list)
+                #log.error("Found restaurant! Adding")
+                #result_list.add(Restaurant.objects.raw("""SELECT * FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1"""))
+                #query_string = """SELECT * FROM 'dealioApp_restaurant'WHERE google_id='""" + value + """' LIMIT 1"""
+                #log.error(query_string)
+                #result_list += list(Restaurant.objects.raw(query_string))
+                result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='" + value + "' LIMIT 1"))
+                log.error(str(result_list))
 
+        log.error(result_list)
+        return render(request, 'dealioApp/restaurants.html', {'restaurants': result_list})
     except:
         return render(request, 'dealioApp/restaurants.html',{'restaurant': restaurants})
-    return render(request, 'dealioApp/restaurants.html',{'restaurants': result_list})
+    #log.error(result_list)
+    #return render(request, 'dealioApp/restaurants.html',{'restaurants': result_list })
 
 
 
