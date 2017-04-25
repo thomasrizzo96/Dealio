@@ -185,7 +185,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'dealioApp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -193,6 +192,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'dealioApp',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
@@ -290,7 +291,7 @@ SERVER_EMAIL = 'best.dealio.app@gmail.com'
 DEFAULT_FROM_EMAIL = "Dealio"
 
 # Site ID enabled
-SITE_ID = 1
+SITE_ID = 2
 
 # URL to redirect to after login
 LOGIN_REDIRECT_URL = '/'
