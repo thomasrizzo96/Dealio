@@ -1,0 +1,12 @@
+{% extends "dealioApp/home.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>Update Profile</h1>
+<form action="/user/user_profile/" method="POST">{% csrf_token %}
+  <label>
+    Restaurants:
+  </label><br/>
+  {{form.restaurants}}
+  <button type = "submit">Submit</button>
+{% endblock %}

@@ -239,13 +239,3 @@ class Restaurant(models.Model):
                     if self.promos[i].rating < self.promos[i+1].rating:
                         self.promos[i], self.promos[i+1] = self.promos[i+1], self.promos[i]
                         finished = False
-
-
-
-
-class Owner(models.Model):
-    restaurants = models.ManyToManyField(Restaurant)
-    owner_id = models.CharField(max_length=25, unique=True)
-
-    def __str__(self):
-        return self.owner_id
