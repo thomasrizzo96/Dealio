@@ -291,7 +291,7 @@ SERVER_EMAIL = 'best.dealio.app@gmail.com'
 DEFAULT_FROM_EMAIL = "Dealio"
 
 # Site ID enabled
-SITE_ID = 1
+SITE_ID = 2
 
 # URL to redirect to after login
 LOGIN_REDIRECT_URL = '/'

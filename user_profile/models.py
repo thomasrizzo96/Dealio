@@ -23,8 +23,9 @@ class UserProfile(models.Model):
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+#TODO: commented out to not cause issues with the merge.
 # a signal that creates a user profile whenever a user is created
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        profile, new = UserProfile.objects.get_or_create(user=instance)
+#@receiver(post_save, sender=User)
+#def create_profile(sender, instance, created, **kwargs):
+#    if created:
+#        profile, new = UserProfile.objects.get_or_create(user=instance)
