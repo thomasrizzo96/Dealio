@@ -12,6 +12,8 @@ from dealioApp.email_text import send_promo_email, send_promo_text
 from django.http import StreamingHttpResponse
 from dealioApp.google_scripts import *
 
+import logging
+log = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -40,23 +42,28 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
 
 @csrf_exempt
 def compute_restaurants(request):
-    restaurants = Restaurant.objects.all()
+    result_list = Restaurant.objects.all()
     try:
-        location = request.POST['getCoords']
-        lat,lng = location.split(",")
+        location = request.POST['apiCoords']
+        lat,lng = location['apiCoords'].split(",")
         p_locationLat = lat
         p_locationLong = lng
-        p_radius = 5
-        p_searchType = "restaurant"
-        p_searchKeyWord = ""
+        p_radius = 50000
+        p_searchType = 'restaurant'
+        p_searchKeyWord = "mexican"
         p_numResults = 25
 
         results = retrieve_results(p_locationLat, p_locationLong, p_radius, p_searchType, p_searchKeyWord, p_numResults)
-        print(results)
+        log.debug(results)
+
+        result_list = set()
+        for key, value in results:
+            if len(Restaurant.objects.filter(google_id=value)!=0):
+                result_list.add(Restaurant.objects.filter(google_id=value))
 
     except:
-        return render(request, 'dealioApp/restaurants.html',{'restaurants': restaurants})
-    return render(request, 'dealioApp/restaurants.html',{'restaurants': restaurants})
+        return render(request, 'dealioApp/restaurants.html',{'restaurant': result_list})
+    return render(request, 'dealioApp/restaurants.html',{'restaurants': result_list})
 
 
 
