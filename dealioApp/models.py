@@ -123,7 +123,6 @@ class Restaurant(models.Model):
     promos = []
     is_filtered = True
 
-    google_id = models.IntegerField()
     owner_number = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField()
@@ -134,6 +133,7 @@ class Restaurant(models.Model):
     category = models.TextField()
     rating = models.CharField(max_length=5)
     yelp = models.TextField()
+    google_id = models.CharField(max_length=100)
 
     def set_owner_number(self, owner_number):
         self.owner_number = owner_number

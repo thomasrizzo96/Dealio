@@ -18,7 +18,7 @@ searchType = 'restaurant' #uses all the types found on google places website    
 searchKeyWord = 'Mexican' #What you're searching for                            #
 mile_radius = 3 #Insert                                                         #
 return_n_results = 5 #how many you want displayed. set to 0 for unlimited       #
-use_current_location = False                                                #
+use_current_location = True                                                #
 zipcode = '84321'                                                               #
                                                                                 #
 #################################################################################
@@ -26,7 +26,9 @@ zipcode = '84321'                                                               
 import urllib
 import json
 import requests
-from PIL import Image
+import codecs
+import urllib.parse
+#from PIL import Image
 
 radius = mile_radius * 1609 #converts miles into meters
 ####################################
@@ -42,7 +44,7 @@ if use_current_location:
     #print locationLong #used for testing longitude coordinates
 else:
     zipURL = 'https://www.zipcodeapi.com/rest/' + zipcode_API + '/info.json/' + zipcode + '/degrees'
-    urlData = urllib.urlopen(zipURL)
+    urlData = urllib.request.urlopen(zipURL)
     jsonData = json.load(urlData)
     locationLat = jsonData['lat']
     locationLong = jsonData['lng']
@@ -51,6 +53,25 @@ else:
 
 #locationLat = 41.745161 #lat and long for Logan, Ut
 #locationLong = -111.8119312
+
+########################################
+    
+
+def retrieve_results(p_locationLat,p_locationLong,p_radius,p_searchType,p_searchKeyWord,p_numResults):
+    
+    p_radius *= 1609 #converts miles to meters
+    search_results = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong)
+
+    dictionary = {'key':'value'}
+    count = 0
+    for er in search_results:
+        if count >= p_numResults:
+            break
+        count += 1
+        restaurantID = er['id']
+        dictionary[count] = restaurantID
+    return dictionary
+    
 
 ########################################
 #Yelp API for Yelp URL
@@ -78,6 +99,8 @@ def get_results(params):
    
   return data
 
+
+
 def get_yelp_url(lat,lng):
     try:
         yelpData = get_results(get_search_parameters(lat,lng))
@@ -91,21 +114,24 @@ def get_yelp_url(lat,lng):
         pass
 
 #########################################
-def google_search(searchType, searchKeyWord, radius):
+def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong):
         
 
     #searchType = 'restaurant' #configure this from one here: https://developers.google.com/places/supported_types
-    encodedType = urllib.quote(searchType)
+    encodedType = urllib.parse.quote(p_searchType)
 
     #searchKeyWord = 'burger' #Use this to search for a keyword. I.e Burger
-    encodedKeyWord = urllib.quote(searchKeyWord)
+    encodedKeyWord = urllib.parse.quote(p_searchKeyWord)
 
 
-    rawData = urllib.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(locationLat) + ',' + str(locationLong) + '&radius=' + str(radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
+    rawData = urllib.request.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
 
     #rawData = urllib.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.745161,-111.8119312&radius=8000&type=bar&keyword=&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
 
-    jsonData = json.load(rawData)
+    reader = codecs.getreader("utf-8")
+    jsonData = json.load(reader(rawData))
+
+    
     searchResults = jsonData['results']
     return searchResults
 
@@ -113,7 +139,7 @@ def google_search(searchType, searchKeyWord, radius):
 ########################################
 #printing Results
 count = 0
-for er in google_search(searchType,searchKeyWord, radius):
+for er in google_search(searchType, searchKeyWord, radius,41.7370,111.8338 ):
     if count >= return_n_results:
         break
     count += 1
@@ -123,38 +149,43 @@ for er in google_search(searchType,searchKeyWord, radius):
     vicinity = er['vicinity']
     types = er['types']
 
-    try:
-        picture_reference = er['photos'][0]['photo_reference']
-        picURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + picture_reference + '&key=' + API_key
-        resource = urllib.urlopen(picURL)
-        fileName = restaurantID + '.jpg'
-        output = open("file01.jpg","wb")
-        output.write(resource.read())
-        output.close()
+    #try:
+        #picture_reference = er['photos'][0]['photo_reference']
+        #picURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + picture_reference + '&key=' + API_key
+        #resource = urllib.urlopen(picURL)
+        #fileName = restaurantID + '.jpg'
+        #output = open("file01.jpg","wb")
+        #output.write(resource.read())
+        #output.close()
 
-        img = Image.open('file01.jpg')
-        img.show()
+        #img = Image.open('file01.jpg')
+        #img.show()
         
-    except KeyError:
-        output = None
+    #except KeyError:
+    #    output = None
 
     #pic = urllib.urlretrieve(picURL, "pic.jpg")
     #img = Image.open(pic)
     #img.show()
     
-    print 'The name of restaurant is: ' + name
-    print 'The unique ID is: ' + str(restaurantID)
-    print 'The google restaurant rating is: ' + str(restaurantRating)
-    print 'The address is: ' + vicinity
+    print ('The name of restaurant is: ' + name)
+    print ('The unique ID is: ' + str(restaurantID))
+    print ('The google restaurant rating is: ' + str(restaurantRating))
+    print ('The address is: ' + vicinity)
     #print types
 
     lat = er['geometry']['location']['lat']
     lng = er['geometry']['location']['lng']
 
     yelpURL = get_yelp_url(lat,lng)
-    if yelpURL is not None: print yelpURL
-    print '''
+    if yelpURL is not None: print (yelpURL)
+    print ('''
 
-            '''
+            ''')
+
+    print('---------------------------------------------------------')
+    print('now printing from the query call')
+test_results = retrieve_results(41.745161,-111.8119312,5,searchType,searchKeyWord,5)
+print(test_results)
 #yelpURL = get_yelp_url(lat,lng)
 #if yelpURL is not None: print yelpURL
