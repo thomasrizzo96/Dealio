@@ -9,13 +9,16 @@ from dealioApp.forms import addPromo, addReview
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.csrf import csrf_exempt
 from dealioApp.email_text import send_promo_email, send_promo_text
+from django.http import StreamingHttpResponse
+from dealioApp.google_scripts import *
+
 
 # Create your views here.
 
 def index(request):
     if request.method == 'POST':
         location = request.POST['location'] #this is a string with the lat and lon seperated by a space. call print(location) if you would like to test.
-
+        print("The location is: " + location)
         return HttpResponseRedirect('restaurants')
 
     return render(request, 'dealioApp/home.html')
@@ -34,16 +37,38 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
 
+
 @csrf_exempt
 def compute_restaurants(request):
-    if request.method == "POST":
-        res = request.GET['apiCoords']
-        print(res)
-    # do something if form is valid
-    context = {
+    restaurants = Restaurant.objects.all()
+    try:
+        location = request.POST['getCoords']
+        lat,lng = location.split(",")
+        p_locationLat = lat
+        p_locationLong = lng
+        p_radius = 5
+        p_searchType = "restaurant"
+        p_searchKeyWord = ""
+        p_numResults = 25
 
-    }
-    return render(request, "dealioApp/restaurant_form.html", context)
+        results = retrieve_results(p_locationLat, p_locationLong, p_radius, p_searchType, p_searchKeyWord, p_numResults)
+        print(results)
+
+    except:
+        return render(request, 'dealioApp/restaurants.html',{'restaurants': restaurants})
+    return render(request, 'dealioApp/restaurants.html',{'restaurants': restaurants})
+
+
+
+    #if request.method == "POST":
+        #res = request.GET['apiCoords']
+        #print(res)
+     #   location = request.POST['location']
+      #  print(location)
+    # do something if form is valid
+    #restaurants = Restaurant.objects.all()
+       # return HttpResponseRedirect('dealioApp/restaurants.html')
+    #return render(request, 'dealioApp/restaurants.html')  # render looks in templates directory #can pass in content into render() such as dictionaries
 
 def ownerSignUp(request):
     return render(request, 'dealioApp/ownerSignUp.html')
