@@ -126,6 +126,7 @@ class Restaurant(models.Model):
     owner_number = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField()
+    address = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=25)
     email_address = models.CharField(max_length=30)
     website= models.CharField(max_length=75)
@@ -134,6 +135,8 @@ class Restaurant(models.Model):
     rating = models.CharField(max_length=5)
     yelp = models.TextField()
     google_id = models.CharField(max_length=100)
+    place_id = models.CharField(max_length=100, default='0')
+
 
     def set_owner_number(self, owner_number):
         self.owner_number = owner_number
@@ -165,6 +168,9 @@ class Restaurant(models.Model):
     def set_yelp(self, yelp):
         self.yelp = yelp
 
+    def set_place_id(self, place_id):
+        self.place_id = place_id
+
     def get_owner_number(self):
         return self.owner_number
 
@@ -194,6 +200,9 @@ class Restaurant(models.Model):
 
     def get_yelp(self):
         return self.yelp
+
+    def get_place_id(self):
+        return self.place_id
 
     def get_absolute_url(self):
         return reverse('promotions', args=(self.id,))

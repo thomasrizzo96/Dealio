@@ -76,41 +76,20 @@ def compute_restaurants(request):
         #result_list = (Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1")
 
         for key, value in results.items():
-            currQuery = Restaurant.objects.raw("""SELECT google_id FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1""")
-            #log.error("CurrQuery is equal to: ")
-            #log.error(currQuery)
-            #log.error("The value from query 1 is: "+ str(key) + " " + str(value))
-            if len(str(currQuery)) == 0:
-                log.error("Could not find restaurant in database...")
-                log.error("Adding to database...")
-                populate_database_django(lat,lng)
-            else:
-                #result_list.add(Restaurant.objects.raw("""SELECT * FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1"""))
-                #log.error(value)
-                query_string = """SELECT * FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1"""
-                #log.error("The value from query 2 is: " + str(key) + " " + str(value))
-                #log.error(query_string)
-                lalala = list(Restaurant.objects.raw(query_string))
-                #log.error(lalala)
-                #log.error("Before appending queries")
-                #log.error(lalala)
-                result_list +=  lalala
-                #log.error("After appending queries")
-                #log.error(result_list)
-                #log.error(list(lalala))
-                #log.error("Hello is: ")
-                #log.error(str(lalala))
-                #log.error(type(lalala))
-                #result_list += list(Restaurant.objects.raw(query_string))
-                #result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='" + value + "' LIMIT 1"))
-                #result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='d08ba7f48795e44a825b8e8a54d04756468ab997' LIMIT 1"))
-                #log.error(type(result_list))
-                #log.error(type(result_list))
+            try:
+                currQuery = Restaurant.objects.raw("""SELECT google_id FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1""")
+                if len(str(currQuery)) == 0:
+                    log.error("Could not find restaurant in database...")
+                    log.error("Adding to database...")
+                    populate_database_django(lat,lng)
+                else:
+                    query_string = """SELECT * FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1"""
+                    lalala = list(Restaurant.objects.raw(query_string))
 
+                    result_list += lalala
+            except:
+                log.error("Problem with querying database for " + key + "," + value)
 
-        #result_list = list(result_list)
-        #log.error(type(result_list))
-        #log.error(result_list)
         return render(request, 'dealioApp/restaurants.html', {'restaurants': result_list})
     except:
         log.error("There is a problem ------------------------------------------------------")
@@ -136,12 +115,12 @@ def ownerSignUp(request):
 
 class RestaurantCreate(CreateView):
     model = Restaurant
-    fields = ['owner_number','name','description','phone_number','email_address','website','picture', 'category','rating','yelp']
+    fields = ['owner_number','name','description','phone_number','email_address','website','picture', 'category','rating','yelp','google_id','place_id','address']
 
 
 class RestaurantUpdate(UpdateView):
     model = Restaurant
-    fields = ['owner_number', 'name', 'description', 'phone_number', 'email_address', 'website', 'picture', 'category','rating', 'yelp']
+    fields = ['owner_number', 'name', 'description', 'phone_number', 'email_address', 'website', 'picture', 'category','rating', 'yelp','google_id','place_id','address']
 
 
 def placefinder(request):

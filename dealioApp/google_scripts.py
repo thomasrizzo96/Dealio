@@ -106,6 +106,7 @@ def populate_database(p_locationLat,p_locationLong):
             picture = "To be implemented"
             rating = er['rating']
             yelp = yelpURL
+            place_id = er['place_id']
             print(unique_id)
             #print("Yelp Website: " + yelp)
 
@@ -121,7 +122,7 @@ def populate_database(p_locationLat,p_locationLong):
                 if len(results)==0:
                     print(name + " was not in database. Inserting now.")
                     
-                    string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
+                    string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, phone_number, email_address, website, picture, category, rating, yelp, google_id, place_id, address) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """','""" + place_id + """','""" + address + """');"""
 
                     #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
                     #print(string)
@@ -173,6 +174,7 @@ def populate_database_django(p_locationLat,p_locationLong):
             picture = "To be implemented"
             rating = er['rating']
             yelp = yelpURL
+            place_id = er['place_id']
             #print(unique_id)
             #print("Yelp Website: " + yelp)
 
@@ -190,7 +192,7 @@ def populate_database_django(p_locationLat,p_locationLong):
                     
                     #string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
 
-                    rest = Restaurant(owner_number=0, name=name, description=description, address=address, phone_number=phone_number, email_address=email_address, website=website, picture=picture, category=category, rating=rating, yelp=yelp, google_id=unique_id)
+                    rest = Restaurant(owner_number=0, name=name, description=description, phone_number=phone_number, email_address=email_address, website=website, picture=picture, category=category, rating=rating, yelp=yelp, google_id=unique_id, place_id=place_id, address=address)
                     #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
                     #print(string)
                     rest.save()
