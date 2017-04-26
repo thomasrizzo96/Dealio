@@ -3,6 +3,10 @@
 #                         User Input Section                                    #               
 #                                                                               #
 #################################################################################
+#from django.contrib.admin.templatetags.admin_list import results
+
+#from dealioApp.models import Restaurant
+
 API_key = 'AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo' #Google API key             #
                                                                                 #
 #Obtain these from Yelp's manage access picURL                                  #
@@ -22,7 +26,8 @@ zipcode_API = 'ScsZ7CgJqKKfH0p74zrXGn1X1UjstvSlIllQXBzomjD4k2coBDmh1nf3iyvL4o7N'
 #zipcode = '84321'                                                               #
                                                                                 #
 #################################################################################
-
+import logging
+log = logging.getLogger(__name__)
 
 import urllib
 import json
@@ -145,8 +150,62 @@ def populate_database(p_locationLat,p_locationLong):
         if connection:
             connection.close() 
 
+
+def populate_database_django(p_locationLat,p_locationLong):
+    search_results = google_search('restaurant','',20,p_locationLat,p_locationLong)
+
+    try:
+        for er in search_results:
+            lat = er['geometry']['location']['lat']
+            lng = er['geometry']['location']['lng']
+
+            yelpURL = get_yelp_url(lat,lng)
+            if yelpURL is None: yelpURL = ''
+
+            unique_id = er['id']
+            owner_id = 0
+            name = er['name']
+            description = "To be implemented"
+            address = er['vicinity']
+            phone_number = "To be implemented"
+            email_address = "To be implemented"
+            website = "To be implemented"
+            picture = "To be implemented"
+            rating = er['rating']
+            yelp = yelpURL
+            #print(unique_id)
+            #print("Yelp Website: " + yelp)
+
+            category = ""
+            for i in er['types']:
+                category +=i + ','
+            
+            try:
+                log.error("Attemping to select database")
+                find_string = "SELECT * FROM 'dealioApp_restaurant' WHERE google_id ='" + unique_id + "' LIMIT 1;"
+                currQuery = Restaurant.objects.raw(find_string)
+                log.error("Attemping to insert into database")
+                if len(str(currQuery))==0:
+                    #print(name + " was not in database. Inserting now.")
+                    
+                    #string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
+
+                    rest = Restaurant(owner_number=0, name=name, description=description, address=address, phone_number=phone_number, email_address=email_address, website=website, picture=picture, category=category, rating=rating, yelp=yelp, google_id=unique_id)
+                    #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
+                    #print(string)
+                    rest.save()
+                else:
+                    log.error(name + " is already in database. Skipping entry...")
+                    continue
+            
+            except sqlite3.Error as e:
+                log.error(":(")
+
+    except sqlite3.Error as e:
+
         
-    
+        log.error("Error %s:" % e.args[0])
+
 ########################################
 #Yelp API for Yelp URL
 import rauth #Used for the Yelp URL API

@@ -83,7 +83,7 @@ def compute_restaurants(request):
             if len(str(currQuery)) == 0:
                 log.error("Could not find restaurant in database...")
                 log.error("Adding to database...")
-                populate_database(lat,lng)
+                populate_database_django(lat,lng)
             else:
                 #result_list.add(Restaurant.objects.raw("""SELECT * FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1"""))
                 #log.error(value)
