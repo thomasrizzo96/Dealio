@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from dealioApp.email_text import send_promo_email, send_promo_text
 from django.http import StreamingHttpResponse
 from dealioApp.google_scripts import *
+from itertools import chain
 
 import logging
 log = logging.getLogger(__name__)
@@ -54,35 +55,61 @@ def compute_restaurants(request):
         p_searchType = 'restaurant'
         p_searchKeyWord = "mexican"
         p_numResults = 25
-
+        log.error(lat)
+        log.error(lng)
         results = retrieve_results(p_locationLat, p_locationLong, p_radius, p_searchType, p_searchKeyWord, p_numResults)
         #log.error(results)
 
         #result_list = Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant' LIMIT 1")
-        result_list = list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1"))
-        result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='d08ba7f48795e44a825b8e8a54d04756468ab997' LIMIT 1"))
+        #result_list = list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1"))
+        #log.error(str(result_list))
 
-
+        #intoparam = "SELECT * FROM 'dealioApp_restaurant'WHERE google_id='d08ba7f48795e44a825b8e8a54d04756468ab997' LIMIT 1"
+        #log.error(intoparam)
+        #result_list += list(Restaurant.objects.raw(intoparam))
+        log.error("Result list is: ")
         #lolol = Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant' LIMIT 15") #this one works!
+        result_list = list(Restaurant.objects.raw("SELECT * FROM dealioApp_restaurant WHERE google_id='ae301c5ce88c4cb7d064ebdf54d47d5b0935d455' LIMIT 1"))
+        #log.error(type(result_list))
+        #result_list = (Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1")
+
         for key, value in results.items():
-            #log.error(str(key) + " , " + value)
             currQuery = Restaurant.objects.raw("""SELECT google_id FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1""")
-            #log.error(str(currQuery))
-       #     log.debug(currQuery)
+            log.error("CurrQuery is equal to: ")
+            log.error(currQuery)
+            log.error("The value from query 1 is: "+ str(key) + " " + str(value))
             if len(str(currQuery)) == 0:
                 log.error("Could not find restaurant in database...")
             else:
-                #log.error("Found restaurant! Adding")
                 #result_list.add(Restaurant.objects.raw("""SELECT * FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1"""))
-                #query_string = """SELECT * FROM 'dealioApp_restaurant'WHERE google_id='""" + value + """' LIMIT 1"""
+                log.error(value)
+                query_string = """SELECT * FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1"""
+                log.error("The value from query 2 is: " + str(key) + " " + str(value))
                 #log.error(query_string)
+                lalala = list(Restaurant.objects.raw(query_string))
+                #log.error(lalala)
+                log.error("Before appending queries")
+                log.error(lalala)
+                result_list +=  lalala
+                log.error("After appending queries")
+                log.error(result_list)
+                #log.error(list(lalala))
+                #log.error("Hello is: ")
+                #log.error(str(lalala))
+                #log.error(type(lalala))
                 #result_list += list(Restaurant.objects.raw(query_string))
-                result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='" + value + "' LIMIT 1"))
-                log.error(str(result_list))
+                #result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='" + value + "' LIMIT 1"))
+                #result_list += list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='d08ba7f48795e44a825b8e8a54d04756468ab997' LIMIT 1"))
+                #log.error(type(result_list))
+                #log.error(type(result_list))
 
-        log.error(result_list)
+
+        #result_list = list(result_list)
+        #log.error(type(result_list))
+        #log.error(result_list)
         return render(request, 'dealioApp/restaurants.html', {'restaurants': result_list})
     except:
+        log.error("There is a problem ------------------------------------------------------")
         return render(request, 'dealioApp/restaurants.html',{'restaurant': restaurants})
     #log.error(result_list)
     #return render(request, 'dealioApp/restaurants.html',{'restaurants': result_list })

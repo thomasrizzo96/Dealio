@@ -22,8 +22,7 @@ zipcode_API = 'ScsZ7CgJqKKfH0p74zrXGn1X1UjstvSlIllQXBzomjD4k2coBDmh1nf3iyvL4o7N'
 #zipcode = '84321'                                                               #
                                                                                 #
 #################################################################################
-import logging
-log = logging.getLogger(__name__)
+
 
 import urllib
 import json
@@ -59,7 +58,7 @@ import urllib.parse
 ########################################
 #This is the function called by django to return a dictionary populated with unique google IDs
 def retrieve_results(p_locationLat,p_locationLong,p_radius,p_searchType,p_searchKeyWord,p_numResults):
-
+    
     search_results = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong)
 
     dictionary = {}
@@ -79,9 +78,9 @@ def populate_database(p_locationLat,p_locationLong):
 
     try:
         connection = sqlite3.connect("../db.sqlite3")
-
+    
         cursor = connection.cursor()
-
+    
         #print("Now trying to write to database")
 
         for er in search_results:
@@ -107,7 +106,7 @@ def populate_database(p_locationLat,p_locationLong):
             category = ""
             for i in er['types']:
                 category +=i + ','
-
+            
             try:
                 find_string = "SELECT * FROM 'dealioApp_restaurant' WHERE google_id ='" + unique_id + "' LIMIT 1;"
                 cursor.execute(find_string)
@@ -115,7 +114,7 @@ def populate_database(p_locationLat,p_locationLong):
                 #print(results)
                 if len(results)==0:
                     print(name + " was not in database. Inserting now.")
-
+                    
                     string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
 
                     #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
@@ -125,28 +124,28 @@ def populate_database(p_locationLat,p_locationLong):
                 else:
                     print(name + " is already in database. Skipping entry...")
                     continue
-
+            
             except sqlite3.Error as e:
-
+    
                 if connection:
                     connection.rollback()
                     print("\n\n")
                     print("Error %s:" % e.args[0])
                     print("\n\n")
     except sqlite3.Error as e:
-
+    
         if connection:
             connection.rollback()
-
+        
         print ("Error %s:" % e.args[0])
 
     finally:
-
+    
         if connection:
-            connection.close()
+            connection.close() 
 
-
-
+        
+    
 ########################################
 #Yelp API for Yelp URL
 import rauth #Used for the Yelp URL API
@@ -160,18 +159,18 @@ def get_search_parameters(lat,lng):
   params["limit"] = "20"
   return params
 
-def get_results(params):
+def get_results(params):   
   session = rauth.OAuth1Session(
     consumer_key = consumer_key
     ,consumer_secret = consumer_secret
     ,access_token = token
     ,access_token_secret = token_secret)
-
+     
   request = session.get("http://api.yelp.com/v2/search",params=params)
   #Transforms the JSON API response into a Python dictionary
   data = request.json()
   session.close()
-
+   
   return data
 
 def get_yelp_url(lat,lng):
@@ -187,9 +186,9 @@ def get_yelp_url(lat,lng):
         pass
 
 def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong):
-
+        
     p_radius *= 1609 #converts miles to meters
-
+    
     #searchType = 'restaurant' #configure this from one here: https://developers.google.com/places/supported_types
     encodedType = urllib.parse.quote(p_searchType)
 
@@ -198,13 +197,13 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
 
     rawData = urllib.request.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
-    #log.error("Raw data: " + rawData)
+
     #rawData = urllib.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.745161,-111.8119312&radius=8000&type=bar&keyword=&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
 
     reader = codecs.getreader("utf-8")
     jsonData = json.load(reader(rawData))
 
-
+    
     searchResults = jsonData['results']
     return searchResults
 
@@ -213,3 +212,4 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 #print(test_results)
 
 #populate_database(41.745161,-111.8119312)
+#populate_database(39.5751,-110.9025)
