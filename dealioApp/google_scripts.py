@@ -78,6 +78,26 @@ def retrieve_results(p_locationLat,p_locationLong,p_radius,p_searchType,p_search
 
 import sqlite3
 import sys
+def get_phone_website(place_id):
+    url_string = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + place_id + "&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo"
+    rawData = urllib.request.urlopen(url_string)
+    reader = codecs.getreader("utf-8")
+    jsonData = json.load(reader(rawData))
+    searchResults = jsonData['result']
+    try:
+        phone_number = searchResults['formatted_phone_number']
+    except:
+        print("Could not find phone number. Setting NULL")
+        phone_number = "NULL"
+
+    try:        
+        website = searchResults['website']
+    except:
+        print("Could not find website. Setting NULL")
+        website = "NULL"
+
+    return phone_number, website
+
 def populate_database(p_locationLat,p_locationLong):
     search_results = google_search('restaurant','',20,p_locationLat,p_locationLong)
 
@@ -100,14 +120,17 @@ def populate_database(p_locationLat,p_locationLong):
             name = er['name']
             description = "To be implemented"
             address = er['vicinity']
-            phone_number = "To be implemented"
             email_address = "To be implemented"
-            website = "To be implemented"
             picture = "To be implemented"
             rating = er['rating']
             yelp = yelpURL
             place_id = er['place_id']
-            print(unique_id)
+            phone_number,website = get_phone_website(place_id)
+            print(name)
+            print(place_id)
+            print(phone_number)
+            print(website)
+            #print(unique_id)
             #print("Yelp Website: " + yelp)
 
             category = ""
@@ -192,7 +215,7 @@ def populate_database_django(p_locationLat,p_locationLong):
                     
                     #string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
 
-                    rest = Restaurant(owner_number=0, name=name, description=description, phone_number=phone_number, email_address=email_address, website=website, picture=picture, category=category, rating=rating, yelp=yelp, google_id=unique_id, place_id=place_id, address=address)
+                    rest = Restaurant(owner_number=0, name=name, description=description, address=address, phone_number=phone_number, email_address=email_address, website=website, picture=picture, category=category, rating=rating, yelp=yelp, google_id=unique_id, place_id=place_id)
                     #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
                     #print(string)
                     rest.save()
