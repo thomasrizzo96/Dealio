@@ -43,7 +43,7 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
 
 @csrf_exempt
 def compute_restaurants(request):
-    restaurants = Restaurant.objects.all()
+    restaurants = list()
 
     #print(result_list)
     try:
@@ -53,13 +53,14 @@ def compute_restaurants(request):
         p_locationLong = lng
         p_radius = 5
         p_searchType = 'restaurant'
-        p_searchKeyWord = "mexican"
+        p_searchKeyWord = ""
         p_numResults = 25
-        log.error(lat)
-        log.error(lng)
+        #log.error(lat)
+        #log.error(lng)
         results = retrieve_results(p_locationLat, p_locationLong, p_radius, p_searchType, p_searchKeyWord, p_numResults)
-        #log.error(results)
 
+        #log.error(results)
+        #log.error("lat,lng = " + lat + "," + lng)
         #result_list = Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant' LIMIT 1")
         #result_list = list(Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1"))
         #log.error(str(result_list))
@@ -67,32 +68,35 @@ def compute_restaurants(request):
         #intoparam = "SELECT * FROM 'dealioApp_restaurant'WHERE google_id='d08ba7f48795e44a825b8e8a54d04756468ab997' LIMIT 1"
         #log.error(intoparam)
         #result_list += list(Restaurant.objects.raw(intoparam))
-        log.error("Result list is: ")
+        #log.error("Result list is: ")
         #lolol = Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant' LIMIT 15") #this one works!
-        result_list = list(Restaurant.objects.raw("SELECT * FROM dealioApp_restaurant WHERE google_id='ae301c5ce88c4cb7d064ebdf54d47d5b0935d455' LIMIT 1"))
+        #result_list = list(Restaurant.objects.raw("SELECT * FROM dealioApp_restaurant WHERE google_id='ae301c5ce88c4cb7d064ebdf54d47d5b0935d455' LIMIT 1"))
+        result_list = list()
         #log.error(type(result_list))
         #result_list = (Restaurant.objects.raw("SELECT * FROM 'dealioApp_restaurant'WHERE google_id='6aa990172a4a68cf8682a70a3c2a9077f11e435b' LIMIT 1")
 
         for key, value in results.items():
             currQuery = Restaurant.objects.raw("""SELECT google_id FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1""")
-            log.error("CurrQuery is equal to: ")
-            log.error(currQuery)
-            log.error("The value from query 1 is: "+ str(key) + " " + str(value))
+            #log.error("CurrQuery is equal to: ")
+            #log.error(currQuery)
+            #log.error("The value from query 1 is: "+ str(key) + " " + str(value))
             if len(str(currQuery)) == 0:
                 log.error("Could not find restaurant in database...")
+                log.error("Adding to database...")
+                populate_database(lat,lng)
             else:
                 #result_list.add(Restaurant.objects.raw("""SELECT * FROM 'dealioApp_restaurant'WHERE google_id=''""" + value + """' LIMIT 1"""))
-                log.error(value)
+                #log.error(value)
                 query_string = """SELECT * FROM 'dealioApp_restaurant' WHERE google_id='""" + value + """' LIMIT 1"""
-                log.error("The value from query 2 is: " + str(key) + " " + str(value))
+                #log.error("The value from query 2 is: " + str(key) + " " + str(value))
                 #log.error(query_string)
                 lalala = list(Restaurant.objects.raw(query_string))
                 #log.error(lalala)
-                log.error("Before appending queries")
-                log.error(lalala)
+                #log.error("Before appending queries")
+                #log.error(lalala)
                 result_list +=  lalala
-                log.error("After appending queries")
-                log.error(result_list)
+                #log.error("After appending queries")
+                #log.error(result_list)
                 #log.error(list(lalala))
                 #log.error("Hello is: ")
                 #log.error(str(lalala))

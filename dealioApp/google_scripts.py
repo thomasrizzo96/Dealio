@@ -101,7 +101,8 @@ def populate_database(p_locationLat,p_locationLong):
             picture = "To be implemented"
             rating = er['rating']
             yelp = yelpURL
-            print("Yelp Website: " + yelp)
+            print(unique_id)
+            #print("Yelp Website: " + yelp)
 
             category = ""
             for i in er['types']:
@@ -153,7 +154,7 @@ import rauth #Used for the Yelp URL API
 def get_search_parameters(lat,lng):
   #See the Yelp API for more details
   params = {}
-  params["term"] = '' #change this to serach for keyword
+  params["term"] = '' #change this to search for keyword
   params["ll"] = "{},{}".format(str(lat),str(lng))
   params["radius_filter"] = "30"
   params["limit"] = "20"
@@ -209,7 +210,9 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
 
 #test_results = retrieve_results(41.745161,-111.8119312,5,'restaurant','mexican',5)
+#test_results = retrieve_results(41.7409122,-111.82003629999997,5,'restaurant','mexican',5)
 #print(test_results)
 
 #populate_database(41.745161,-111.8119312)
 #populate_database(39.5751,-110.9025)
+#populate_database(41.7409122,-111.82003629999997)
