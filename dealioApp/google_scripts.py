@@ -34,7 +34,9 @@ import json
 import requests
 import codecs
 import urllib.parse
-#from PIL import Image
+import os
+from PIL import Image
+dir = os.path.dirname(__file__)
 
 #radius = mile_radius * 1609 #converts miles into meters
 ####################################
@@ -132,6 +134,31 @@ def populate_database(p_locationLat,p_locationLong):
             print(website)
             #print(unique_id)
             #print("Yelp Website: " + yelp)
+
+            try:
+                picture_reference = er['photos'][0]['photo_reference']
+                picURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + picture_reference + '&key=' + API_key
+                resource = urllib.request.urlopen(picURL)
+
+                
+                pictureName = unique_id + ".jpg"
+                fileName = os.path.join(dir,'static/pictures/restaurant_pics/'+unique_id+".jpg")
+                picture = pictureName
+                #fileName = name + '.jpg'
+                output = open(fileName,"wb")
+                output.write(resource.read())
+                output.close()
+
+                #img = Image.open(fileName)
+                #img.show()
+        
+            except:
+                picture = "NULL"
+
+            #pic = urllib.urlretrieve(picURL, "pic.jpg")
+            #img = Image.open(pic)
+            #img.show()
+            
 
             category = ""
             for i in er['types']:
@@ -282,7 +309,7 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
 
     rawData = urllib.request.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
-
+    print(rawData)
     #rawData = urllib.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.745161,-111.8119312&radius=8000&type=bar&keyword=&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
 
     reader = codecs.getreader("utf-8")
