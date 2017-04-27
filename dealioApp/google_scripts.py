@@ -315,7 +315,7 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
     reader = codecs.getreader("utf-8")
     jsonData = json.load(reader(rawData))
 
-    
+    #print(jsonData)
     searchResults = jsonData['results']
     return searchResults
 
