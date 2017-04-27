@@ -104,7 +104,7 @@
           }
 
           function getCoords() {
-            post('/compute_restaurants/', {apiCoords: coordStringJS});
+            post('/restaurants/', {apiCoords: coordStringJS});
           }
 
           function post(path, params, method) {
@@ -165,7 +165,7 @@
 
                 var currCoord = position.coords.latitude + "," + position.coords.longitude;
                 //console.log(currCoord)
-                post('/compute_restaurants/', {apiCoords: currCoord});
+                post('/restaurants/', {apiCoords: currCoord});
                 }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo&libraries=places&callback=initAutocomplete"

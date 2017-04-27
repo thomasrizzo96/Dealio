@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^about$', views.about, name='about'),
-    url(r'^restaurants$', views.restaurants, name='restaurants'),
+    url(r'^restaurants/$', views.restaurants, name='restaurants'),
     url(r'^compute_restaurants/$', views.compute_restaurants, name='urlname'),
     url(r'^promotions/(?P<restaurant_id>\d+)/$', views.promotions, name='promotions'),#this uses a named group for regex
     url(r'^addPromo/(?P<restaurant_id>\d+)/$', views.add_promo, name='addPromo'),
