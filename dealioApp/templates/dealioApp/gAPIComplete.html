@@ -57,6 +57,7 @@
           // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo&libraries=places">
           var placeSearch, autocomplete;
           var coordStringJS = "";
+          var auto_coordStringJS = "";
           var componentForm = {
             street_number: 'short_name',
             route: 'long_name',
@@ -74,7 +75,7 @@
             // When the user selects an address from the dropdown, populate the address
             // fields in the form.
             autocomplete.addListener('place_changed', fillInAddress);
-            console.log(fillInAddress())
+            //console.log(fillInAddress())
           }
           function fillInAddress() {
             // Get the place details from the autocomplete object.
@@ -83,7 +84,7 @@
             var lng =  place.geometry.location.lng();
             var coordString = lat + "," + lng;
             coordStringJS = coordString
-            console.log(coordString);
+            //console.log(coordString);
             //document.getElementById(coordString).value = coordString;
             //var hello = document.getElementById(coordString).value;
 
@@ -105,6 +106,7 @@
           function getCoords() {
             post('/compute_restaurants/', {apiCoords: coordStringJS});
           }
+
           function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
     // The rest of this code assumes you are not using a library.
@@ -129,7 +131,7 @@
           // Bias the autocomplete object to the user's geographical location,
           // as supplied by the browser's 'navigator.geolocation' object.
           function geolocate() {
-              console.log("geolocate being called")
+              //console.log("geolocate being called")
             var coordString = "";
             if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(function(position) {
@@ -146,21 +148,31 @@
             }
 
           }
-        </script>
-        <script>
-            function getLocation() {
+          var x = document.getElementById("demo");
+
+          function getLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition);
                 } else {
                     x.innerHTML = "Geolocation is not supported by this browser.";
                 }
             }
+            var x = document.getElementById("demo");
+
+
+
+            function showPosition(position) {
+
+                var currCoord = position.coords.latitude + "," + position.coords.longitude;
+                //console.log(currCoord)
+                post('/compute_restaurants/', {apiCoords: currCoord});
+                }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo&libraries=places&callback=initAutocomplete"
             async defer></script>
 	</div>
     <button type="button" onclick="getCoords()">Submit!</button>
-    <button type="button" onclick="getCoords()">Use Current Location</button>
+    <button type="button" onclick="getLocation()">Use Current Location</button>
 
 
 </head>
