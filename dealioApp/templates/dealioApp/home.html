@@ -32,7 +32,7 @@
             <li><a href="{% url 'restaurant-add' %}">Create Rest.</a></li>
             <div class="navbar-brand" href="/">{% trans "Logged in" %}: {{ user.username }}</div>
         {% else %}
-           <li><a href="{% url 'auth_login' %}">{% trans "Log in" %}</a></li>
+           <li><a href="{% url 'auth_login' %}">{% trans "Restaurant Log in" %}</a></li>
            <li><a href="/admin">Admin Login</a></li>
         {% endif %}
       </ul>

@@ -105,8 +105,11 @@
             <ul>
                 {% for rest in restaurants %}
                     {% if rest.is_filtered is True %}
+                        <div stye="text-align:center">
 
-                        <li><h1 style="text-align: left"><a class= "btn btn-primary btn-lg" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a></h1> <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
+                        <li><h1 style="text-align: center"><a class= "btn btn-primary btn-lg" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a></h1>
+                        <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
+                        </div>
                     {% endif %}
                 {% endfor %}
             </ul>
