@@ -3,6 +3,8 @@
 <head>
 
     {% extends "dealioApp/home.html" %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/new.css'%}" />
 
 
 </head>
@@ -18,7 +20,7 @@
                   <form method="post" action="{% url 'rest_filtered' %}">
 {#                      Security Feature#}
                       {% csrf_token %}
-                      <li><h2> Promo. Filter</h2></li>
+                      <li><h2>Filter</h2></li>
                       <li><a value="Reset Filters" href= /reset_filtered>Reset Filters </a></li>
                       <li><input type="checkbox" id="American" value="American" name="resFilter[]">American</li>
                       <li><input type="checkbox" id="Mexican" value="Mexican" name="resFilter[]">Mexican</li>
@@ -26,6 +28,12 @@
                       <li><input type="checkbox" id="Indian" value="Indian" name="resFilter[]">Indian</li>
                       <li><input type="checkbox" id="Italian" value="Italian" name="resFilter[]">Italian</li>
                       <li><input type="submit" value="Apply Filters"></li>
+                      <br><br><br><br>
+                      <div id="slider" style="">
+                          <input class="bar" type="range" id="rangeinput" value="5" onchange="rangevalue.value=value"/>
+                          <span class="highlight"></span>
+                          <output id="rangevalue">5 Miles</output>
+                      </div>
                   </form>
               </ul>
           </div> <!--well bs-sidebar affix-->
