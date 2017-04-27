@@ -93,7 +93,7 @@ def compute_restaurants(request):
         return render(request, 'dealioApp/restaurants.html', {'restaurants': result_list})
     except:
         log.error("There is a problem ------------------------------------------------------")
-        return render(request, 'dealioApp/restaurants.html',{'restaurant': restaurants})
+        return render(request, 'dealioApp/restaurants.html', {'restaurant': restaurants})
     #log.error(result_list)
     #return render(request, 'dealioApp/restaurants.html',{'restaurants': result_list })
 

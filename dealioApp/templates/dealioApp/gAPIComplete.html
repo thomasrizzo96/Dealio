@@ -147,10 +147,21 @@
 
           }
         </script>
+        <script>
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+        </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo&libraries=places&callback=initAutocomplete"
             async defer></script>
 	</div>
     <button type="button" onclick="getCoords()">Submit!</button>
+    <button type="button" onclick="getCoords()">Use Current Location</button>
+
 
 </head>
 <body>
