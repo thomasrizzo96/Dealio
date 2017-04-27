@@ -109,9 +109,6 @@ def compute_restaurants(request):
        # return HttpResponseRedirect('dealioApp/restaurants.html')
     #return render(request, 'dealioApp/restaurants.html')  # render looks in templates directory #can pass in content into render() such as dictionaries
 
-def ownerSignUp(request):
-    return render(request, 'dealioApp/ownerSignUp.html')
-
 
 class RestaurantCreate(CreateView):
     model = Restaurant
@@ -199,8 +196,9 @@ def reset_promo_filtered(request, restaurant_id):
 
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
 
+
 # add new review to promotion
-def new_review(request, promo_id):
+def new_review(request, restaurant_id, promo_id):
     promo = Promotion.objects.get(id=promo_id)
     if request.method == 'POST':
         # create a form instance and populate it with data from the request
@@ -208,17 +206,19 @@ def new_review(request, promo_id):
         if form.is_valid():
             newRev = form.save()
             promo.addReview(newRev)
-        return HttpResponseRedirect('/promotions/' + promo_id)
+        return HttpResponseRedirect('/promotions/' + restaurant_id)
     else:
         form = addReview()
     return render(request, 'dealioApp/addReview.html', {'form': form})
 
-#displays review
+
+# displays review
 def display_reviews(request, promo_id):
     promo = Promotion.objects.get(id=promo_id)
     return render(request, 'dealioApp/reviews.html', {'promotion': promo})
 
-#share a promo via email or text
+
+# share a promo via email or text
 def share_promo(request, promo_id):
     promo = Promotion.objects.get(id=promo_id)
     if request.method == 'POST':
@@ -232,5 +232,3 @@ def share_promo(request, promo_id):
         return HttpResponseRedirect('/promotions/' + str(promo.id))
 
     return render(request, 'dealioApp/share_promo.html')
-
-
