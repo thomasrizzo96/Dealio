@@ -109,9 +109,6 @@ def compute_restaurants(request):
        # return HttpResponseRedirect('dealioApp/restaurants.html')
     #return render(request, 'dealioApp/restaurants.html')  # render looks in templates directory #can pass in content into render() such as dictionaries
 
-def ownerSignUp(request):
-    return render(request, 'dealioApp/ownerSignUp.html')
-
 
 class RestaurantCreate(CreateView):
     model = Restaurant
@@ -235,5 +232,3 @@ def share_promo(request, promo_id):
         return HttpResponseRedirect('/promotions/' + str(promo.id))
 
     return render(request, 'dealioApp/share_promo.html')
-
-
