@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 
-<<<<<<< HEAD
     {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
@@ -42,6 +41,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="/">Dealio Home</a></li>
+
+
         <li><a href="/about"> About</a></li>
       </ul>
 
@@ -49,6 +50,9 @@
     {% endblock %}
   </div><!-- /.container-fluid -->
 </nav>
+
+
+
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/new.css'%}" />
 
@@ -68,7 +72,6 @@
 {#                      Security Feature#}
                       {% csrf_token %}
                       <li style="color:white;"><h2>Filter Options</h2></li>
-                      <li><h2>Filter Options</h2></li>
                       <li><a value="Reset Filters" href= /reset_filtered>Reset Filters </a></li>
                       <li style="color:white;"><input type="checkbox" id="American" value="American" name="resFilter[]"> &ensp; American</li>
                       <li style="color:white;"><input type="checkbox" id="Mexican" value="Mexican" name="resFilter[]"> &ensp; Mexican</li>
