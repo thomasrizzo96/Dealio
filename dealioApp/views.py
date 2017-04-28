@@ -288,7 +288,7 @@ def display_reviews(request, promo_id):
 
 
 # share a promo via email or text
-def share_promo(request, promo_id):
+def share_promo(request, promo_id, restaurant_id):
     promo = Promotion.objects.get(id=promo_id)
     if request.method == 'POST':
         number = request.POST['number']
@@ -298,6 +298,6 @@ def share_promo(request, promo_id):
             send_promo_email(email, promo.title, promo.description)
         if number != '':
             send_promo_text(number, promo.title, promo.description)
-        return HttpResponseRedirect('/promotions/' + str(promo.id))
+        return HttpResponseRedirect('/promotions/' + restaurant_id)
 
     return render(request, 'dealioApp/share_promo.html')
