@@ -83,7 +83,7 @@
         {% block content %}
             <div class = "container-fluid">
                 <div class="row" style="align-content: center">
-                    <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center" style="align-content: center" id="popular">
+                    <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center" style="text-align: center; width: 1200px" id="popular">
                         <span><h1>{{restaurant.name}} Promotions </h1><h3>Rating: {{ restaurant.rating }}</h3></span>
                     <h2><a class = "btn btn-primary" style="width:275px;" href="{{restaurant.yelp}}">Visit {{ restaurant.name }} on Yelp</a></h2>
                         <a target="_blank" title="Deliciousness" align="right" href="{{ restaurant.website }}"><img style="max-height: 450px" alt="{{ restaurant.name  }}'s website" src=" {% static "pictures/restaurant_pics/" %}{{ restaurant.picture }}" border=0></a>
