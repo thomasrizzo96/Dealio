@@ -24,7 +24,7 @@
 
 
 
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" style="overflow-y: scroll;">
   <div class="container-fluid" style="background-color:#ffffff;">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -63,46 +63,42 @@
 <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
+        <div id="sidebar-wrapper" style="position: absolute; scrollbar-base-color: transparent; scrollbar-arrow-color: transparent">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                 </li>
                <form method="post" action="{% url 'restaurants' %}">
 {#                      Security Feature#}
                       {% csrf_token %}
-                      <li style="color:white;"><h2>Filter Options</h2></li>
-
-
-                        <div style="margin:auto">
-                            <a style="color:white;">Search Parameters(optional):</a><br>
-                            <li style="color:black;"><input type="text" style="height:25px;" name="searchParam"></li>
-                        </div>
-                      <li style="color:white;"><input type="radio" id="American" value="American" name="resFilter"> &ensp; American</li>
-                      <li style="color:white;"><input type="radio" id="Mexican" value="Mexican" name="resFilter"> &ensp; Mexican</li>
-                      <li style="color:white;"><input type="radio" id="Chinese" value="Chinese" name="resFilter"> &ensp; Chinese</li>
-                      <li style="color:white;"><input type="radio" id="Indian" value="Indian" name="resFilter"> &ensp; Indian</li>
-                      <li style="color:white;"><input type="radio" id="Italian" value="Italian" name="resFilter"> &ensp; Italian</li>
-                      <li style="color:white;"><input type="radio" id="Bar" value="Bar" name="resFilter"> &ensp; Bar</li>
-                      <li style="color:white;"><input type="hidden" value="{{ coords }}" name="apiCoords"></li>
-                      <br>
-                      <div id="slider" style="margin:auto;">
-                          <input class="bar" style="width:150px;margin:auto;" type="range" min="1" max="50" id="rangeinput" name="radius" value="10" onchange="rangevalue.value=value"/>
-                           <span class="highlight"></span>
-                          <li><span class="nowrap" style="color:white;">Radius Miles:<output style="color:white;" id="rangevalue">10</output></span></li>
-
-                      </div>
-                      <li style="color:white;"><input type="radio" id="Most_Popular" value="Most_Popular" name="popularity"> &ensp; Most Popular</li>
-                      <li style="color:white;"><input type="radio" id="Least_Popular" value="Least_Popular" name="popularity"> &ensp; Least Popular</li>
+                   <li style="color:white;"><h2>Filter Options</h2></li>
+                   <div style="margin:auto">
+                       <a style="color:white;">Search Parameters(optional):</a><br>
+                       <li style="color:black;"><input type="text" style="height:25px;" name="searchParam"></li>
+                   </div>
+                   <li style="color:white;"><input type="radio" id="American" value="American" name="resFilter[]"> &ensp; American</li>
+                   <li style="color:white;"><input type="radio" id="Mexican" value="Mexican" name="resFilter[]"> &ensp; Mexican</li>
+                   <li style="color:white;"><input type="radio" id="Chinese" value="Chinese" name="resFilter[]"> &ensp; Chinese</li>
+                   <li style="color:white;"><input type="radio" id="Indian" value="Indian" name="resFilter[]"> &ensp; Indian</li>
+                   <li style="color:white;"><input type="radio" id="Italian" value="Italian" name="resFilter[]"> &ensp; Italian</li>
+                   <li style="color:white;"><input type="radio" id="Bar" value="Bar" name="resFilter[]"> &ensp; Bar</li>
+                   <li style="color:white;"><input type="hidden" value="{{ coords }}" name="apiCoords"></li>
+                   <br>
+                   <div id="slider" style="margin:auto;">
+                       <input class="bar" style="width:150px;margin:auto;" type="range" min="1" max="50" id="rangeinput" name="radius" value="10" onchange="rangevalue.value=value"/>
+                       <span class="highlight"></span>
+                       <li><span class="nowrap" style="color:white;">Radius Miles:<output style="color:white;" id="rangevalue">10</output></span></li>
+                   </div>
+                   <li style="color:white;"><input type="radio" id="Most_Popular" value="Most_Popular" name="popularity"> &ensp; Most Popular</li>
+                   <li style="color:white;"><input type="radio" id="Least_Popular" value="Least_Popular" name="popularity"> &ensp; Least Popular</li>
                    <br>
                    <li><input type="submit" value="Apply Filters"></li>
-                  </form>
+               </form>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
         <div id="page-content-wrapper">
-
 
 
   {% block content %}
@@ -117,6 +113,8 @@
                     {% if rest.is_filtered is True %}
                         <div style="text-align:left">
                         <li><h1 style="text-align:center;"><a class= "btn btn-primary btn-lg" style="width:250px;" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a> Rating: {{ rest.rating }}</h1>
+                        <div style = "text-align:center;">
+                        <li><h1 style="text-align:center;"><a class= "btn btn-primary btn-lg" style="width:250px; white-space: normal;" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a></h1>
                         <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
                         </div>
                     {% endif %}
