@@ -305,6 +305,11 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
     #searchKeyWord = 'burger' #Use this to search for a keyword. I.e Burger
     encodedKeyWord = urllib.parse.quote(p_searchKeyWord)
+    print("encoded key word")
+    print(encodedKeyWord)
+
+
+    #newData = urllib.request.urlopen(https://maps.googleapis.com/maps/api/place/textsearch/json?query=bar+restaurant&sensor=true&location=41.745161,-111.8119312&rankby=distance&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
 
 
     rawData = urllib.request.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
