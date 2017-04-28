@@ -8,6 +8,13 @@
     <script src="{% static 'js/jquery.js' %}"></script>
     <script src ="{% static 'js/bootstrap.js'%}"></script>
 
+    <style>
+    img {
+    width: auto;
+    height: 100%;
+    }
+    </style>
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,11 +82,11 @@
     <div id="page-content-wrapper">
         {% block content %}
             <div class = "container-fluid">
-                <div class="row">
-                    <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center" id="popular">
+                <div class="row" style="align-content: center">
+                    <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10" align = "center" style="align-content: center" id="popular">
                         <span><h1>{{restaurant.name}} Promotions </h1><h3>Rating: {{ restaurant.rating }}</h3></span>
                     <h2><a class = "btn btn-primary" style="width:275px;" href="{{restaurant.yelp}}">Visit {{ restaurant.name }} on Yelp</a></h2>
-                        <a target="_blank" title="Deliciousness" align="right" href="{{ restaurant.website }}"><img alt="{{ restaurant.name  }}'s website" src=" {% static "pictures/restaurant_pics/" %}{{ restaurant.picture }}" border=0></a>
+                        <a target="_blank" title="Deliciousness" align="right" href="{{ restaurant.website }}"><img style="max-height: 450px" alt="{{ restaurant.name  }}'s website" src=" {% static "pictures/restaurant_pics/" %}{{ restaurant.picture }}" border=0></a>
 
                     <h2><a class = "btn btn-primary"href="{{restaurant.website}}">{{ restaurant.name }}'s Official Website</a></h2>
                     <h2>{{ restaurant.address }}, {{ restaurant.phone_number }}</h2>
