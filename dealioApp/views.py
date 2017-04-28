@@ -45,16 +45,17 @@ def restaurants(request):
         try:
             try:
                 p_radius = int(request.POST['radius'])
-                print("p_radius was found to be" + p_radius)
+                #print("p_radius was found to be" + p_radius)
             except:
-                log.error("Could not get radius")
+                pass
+                #log.error("Could not get radius")
 
-            log.error("it found a radius...")
+            #log.error("it found a radius...")
             if p_radius is None:
-                log.error("oopsie")
+                #log.error("oopsie")
                 p_radius = 5
         except:
-            log.exception("radius was not defined")
+            #log.exception("radius was not defined")
             p_radius = 5
 
         try:
@@ -76,13 +77,13 @@ def restaurants(request):
             #log.error(range_input)
 
         if p_searchKeyWord is None or p_searchKeyWord == "":
-            log.error("p_search keyword is none")
+            #log.error("p_search keyword is none")
             p_searchKeyWord = choice
         if p_searchKeyWord is None:
             log.error("choice is also none")
             p_searchKeyWord = ''
 
-        log.error("logging p_searchKeyWord")
+        #log.error("logging p_searchKeyWord")
         log.error(p_searchKeyWord)
 
         coordString = location

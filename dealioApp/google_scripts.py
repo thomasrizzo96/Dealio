@@ -76,11 +76,11 @@ def retrieve_results(p_locationLat,p_locationLong,p_radius,p_searchType,p_search
     
 
     search_results, token = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong)
-    print("matching token should be: \n\n")
+    #print("matching token should be: \n\n")
 
     for er in search_results:
         count += 1
-        log.error("count = " + str(count))
+        #log.error("count = " + str(count))
         restaurantID = er['id']
         dictionary[count] = restaurantID
 
@@ -88,13 +88,13 @@ def retrieve_results(p_locationLat,p_locationLong,p_radius,p_searchType,p_search
             return dictionary
 
     while token!='null':
-        time.sleep(.5)
+        time.sleep(.3)
         search_results, token = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong,token)
-        print("matching token should be: \n\n")
+        #print("matching token should be: \n\n")
 
         for er in search_results:
             count += 1
-            log.error("count = " + str(count))
+            #log.error("count = " + str(count))
             restaurantID = er['id']
             dictionary[count] = restaurantID    
     
@@ -130,8 +130,6 @@ def populate_database(p_locationLat, p_locationLong,has_already_run=False, token
 
     if has_already_run and token=='null':
         return
-    elif token!='null' and has_already_run==True:
-        print('Running population script again with a token')
 
     has_already_run = True
 
@@ -344,9 +342,9 @@ def get_yelp_url(lat,lng):
         pass
 
 def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong,token='null'):
-    print("Starting new google_search with parameter token: ")
-    print(token)
-    print('\n\n\n')
+    #print("Starting new google_search with parameter token: ")
+    #print(token)
+    #print('\n\n\n')
 
     p_radius *= 1609 #converts miles to meters
 
@@ -362,7 +360,7 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
     #searchKeyWord = 'burger' #Use this to search for a keyword. I.e Burger
     encodedKeyWord = urllib.parse.quote(p_searchKeyWord)
-    print("encoded keyword is: " + encodedKeyWord)
+    #print("encoded keyword is: " + encodedKeyWord)
     #log.error("encoded key word is:" + encodedKeyWord)
     #print("encoded key word")
     #print(encodedKeyWord)
@@ -370,7 +368,7 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
     #newData = urllib.request.urlopen(https://maps.googleapis.com/maps/api/place/textsearch/json?query=bar+restaurant&sensor=true&location=41.745161,-111.8119312&rankby=distance&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
     newDataString = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + encodedKeyWord + '+' + encodedType + '&type='+ encodedType + '&sensor=true&location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) +'&key=' + API_key + token
-    print('new data ' + newDataString)
+    #print('new data ' + newDataString)
     #log.error(newDataString)
     newData = urllib.request.urlopen(newDataString)
 
@@ -394,9 +392,9 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
     try:
         #print(jsonData)
         token = jsonData['next_page_token']
-        print("inside search results. just grabbed new token. new token is:")
+        #print("inside search results. just grabbed new token. new token is:")
     except:
-        print('token failed. could not find token for next page.')
+        #print('token failed. could not find token for next page.')
         token = 'null'
     
     return searchResults, token

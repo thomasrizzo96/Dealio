@@ -112,7 +112,7 @@
                 {% for rest in restaurants %}
                     {% if rest.is_filtered is True %}
                         <div style="text-align:left">
-                        <li><h1 style="text-align:center;"><a class= "btn btn-primary btn-lg" style="width:250px;" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a> Rating: {{ rest.rating }}</h1>
+                        <li><h1 style="text-align:center;"><a class= "btn btn-primary btn-lg" style="width:275px;" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a></h1>
                         <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
                         </div>
                     {% endif %}
@@ -132,6 +132,8 @@
      <!-- jQuery -->
 
     <script src="{% static 'js/jquery.js'%}"></script>
+
+    <script> function setPrecisionRating(num) { document.getElementById("demo").innerHTML = num.toPrecision(2);}</script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.min.js'%}"></script>
