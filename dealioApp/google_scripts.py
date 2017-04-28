@@ -30,6 +30,7 @@ import logging
 log = logging.getLogger(__name__)
 
 import urllib
+import time
 import json
 import requests
 import codecs
@@ -66,16 +67,39 @@ dir = os.path.dirname(__file__)
 #This is the function called by django to return a dictionary populated with unique google IDs
 def retrieve_results(p_locationLat,p_locationLong,p_radius,p_searchType,p_searchKeyWord,p_numResults):
     
-    search_results = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong)
-
     dictionary = {}
+    iters = 'init'
     count = 0
+    #token='init'
+    
+    #while token!='null':
+    
+
+    search_results, token = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong)
+    print("matching token should be: \n\n")
+
     for er in search_results:
-        if count >= p_numResults:
-            break
         count += 1
+        log.error("count = " + str(count))
         restaurantID = er['id']
         dictionary[count] = restaurantID
+
+        if count >= p_numResults:
+            return dictionary
+
+    while token!='null':
+        time.sleep(.5)
+        search_results, token = google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong,token)
+        print("matching token should be: \n\n")
+
+        for er in search_results:
+            count += 1
+            log.error("count = " + str(count))
+            restaurantID = er['id']
+            dictionary[count] = restaurantID    
+    
+
+    #print(dictionary)
     return dictionary
 
 import sqlite3
@@ -100,9 +124,18 @@ def get_phone_website(place_id):
 
     return phone_number, website
 
-def populate_database(p_locationLat,p_locationLong):
-    search_results = google_search('restaurant','',20,p_locationLat,p_locationLong)
 
+def populate_database(p_locationLat, p_locationLong,has_already_run=False, token='null'):
+    search_results, token = google_search('Restaurant', '', 20, p_locationLat, p_locationLong,token)
+
+    if has_already_run and token=='null':
+        return
+    elif token!='null' and has_already_run==True:
+        print('Running population script again with a token')
+
+    has_already_run = True
+
+    
     try:
         connection = sqlite3.connect("../db.sqlite3")
         cursor = connection.cursor()
@@ -118,7 +151,7 @@ def populate_database(p_locationLat,p_locationLong):
             owner_id = 0
             name = er['name']
             description = "To be implemented"
-            address = er['vicinity']
+            address = er['formatted_address']
             email_address = "To be implemented"
             picture = "To be implemented"
             rating = er['rating']
@@ -174,11 +207,20 @@ def populate_database(p_locationLat,p_locationLong):
     
         if connection:
             connection.close()
+            
+    populate_database(p_locationLat, p_locationLong,has_already_run,token)
+  
+def populate_database_django(p_locationLat, p_locationLong,has_already_run=False, token='null'):
+    search_results, token = google_search('restaurant', '',20, p_locationLat, p_locationLong,token)
 
 
-def populate_database_django(p_locationLat, p_locationLong):
-    search_results = google_search('restaurant', '', 20, p_locationLat, p_locationLong)
+    if has_already_run and token=='null':
+        return
+
+    has_already_run = True
+    
     log.error("populate_database_django")
+
     try:
         log.error("connecting to database")
         connection = sqlite3.connect("../db.sqlite3")
@@ -191,7 +233,6 @@ def populate_database_django(p_locationLat, p_locationLong):
 
             yelpURL = get_yelp_url(lat, lng)
             if yelpURL is None: yelpURL = '/'
-
             unique_id = er['id']
             owner_id = 0
             name = er['name']
@@ -245,6 +286,11 @@ def populate_database_django(p_locationLat, p_locationLong):
                     print("\n\n")
                     log.error("Error %s:" % e.args[0])
                     log.error("\n\n")
+
+
+
+
+
     except sqlite3.Error as e:
         log.error("Connection Failed")
 
@@ -256,6 +302,7 @@ def populate_database_django(p_locationLat, p_locationLong):
 
         if connection:
             connection.close()
+
 
                 ########################################
 #Yelp API for Yelp URL
@@ -296,32 +343,63 @@ def get_yelp_url(lat,lng):
     except:
         pass
 
-def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong):
-        
+def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locationLong,token='null'):
+    print("Starting new google_search with parameter token: ")
+    print(token)
+    print('\n\n\n')
+
     p_radius *= 1609 #converts miles to meters
+
+    if token=='null' or token=='init':
+        token = ''
+    elif token is None:
+        token=''
+    else:
+        token = '&pagetoken='+token
     
     #searchType = 'restaurant' #configure this from one here: https://developers.google.com/places/supported_types
     encodedType = urllib.parse.quote(p_searchType)
 
     #searchKeyWord = 'burger' #Use this to search for a keyword. I.e Burger
     encodedKeyWord = urllib.parse.quote(p_searchKeyWord)
-    print("encoded key word")
-    print(encodedKeyWord)
+    print("encoded keyword is: " + encodedKeyWord)
+    #log.error("encoded key word is:" + encodedKeyWord)
+    #print("encoded key word")
+    #print(encodedKeyWord)
 
 
     #newData = urllib.request.urlopen(https://maps.googleapis.com/maps/api/place/textsearch/json?query=bar+restaurant&sensor=true&location=41.745161,-111.8119312&rankby=distance&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
+    newDataString = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + encodedKeyWord + '+' + encodedType + '&type='+ encodedType + '&sensor=true&location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) +'&key=' + API_key + token
+    print('new data ' + newDataString)
+    #log.error(newDataString)
+    newData = urllib.request.urlopen(newDataString)
 
 
-    rawData = urllib.request.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
+    #rawDataString = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key
+    #rawData = urllib.request.urlopen(rawDataString)
+    #print('raw data ' + rawDataString)
     #print(rawData)
     #rawData = urllib.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.745161,-111.8119312&radius=8000&type=bar&keyword=&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
-
+    #time.sleep(.5)
     reader = codecs.getreader("utf-8")
-    jsonData = json.load(reader(rawData))
+    time.sleep(.5)
+    jsonData = json.load(reader(newData))
+    #print('printing json data')
+    #print(jsonData)
 
     #print(jsonData)
     searchResults = jsonData['results']
-    return searchResults
+    token = 'null'
+
+    try:
+        #print(jsonData)
+        token = jsonData['next_page_token']
+        print("inside search results. just grabbed new token. new token is:")
+    except:
+        print('token failed. could not find token for next page.')
+        token = 'null'
+    
+    return searchResults, token
 
 
 #test_results = retrieve_results(41.745161,-111.8119312,5,'restaurant','mexican',5)

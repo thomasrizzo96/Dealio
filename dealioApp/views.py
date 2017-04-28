@@ -40,11 +40,15 @@ def restaurants(request):
     # print(result_list)
     try:
         location = request.POST['apiCoords']
+        p_radius=''
 
         try:
-            p_radius = int(request.POST['radius'])
-            log.error(p_radius)
-            log.error(type(p_radius))
+            try:
+                p_radius = int(request.POST['radius'])
+                print("p_radius was found to be" + p_radius)
+            except:
+                log.error("Could not get radius")
+
             log.error("it found a radius...")
             if p_radius is None:
                 log.error("oopsie")
@@ -54,11 +58,10 @@ def restaurants(request):
             p_radius = 5
 
         try:
-            choice = request.POST['resFilter']
-            if choice is None or choice != '':
-                choice = 'show_all'
+            choice = request.POST['resFilter[]']
+            print("CHOICE IS " + choice)
         except:
-            choice = 'show_all'
+            choice = ''
         try:
             popularity = request.POST['popularity']
             if popularity is None or popularity != '':
@@ -68,20 +71,28 @@ def restaurants(request):
 
         try:
             p_searchKeyWord = request.POST['searchParam']
-            if p_searchKeyWord is None:
-                p_searchKeyWord = ''
         except:
             p_searchKeyWord=''
             #log.error(range_input)
+
+        if p_searchKeyWord is None or p_searchKeyWord == "":
+            log.error("p_search keyword is none")
+            p_searchKeyWord = choice
+        if p_searchKeyWord is None:
+            log.error("choice is also none")
+            p_searchKeyWord = ''
+
+        log.error("logging p_searchKeyWord")
+        log.error(p_searchKeyWord)
 
         coordString = location
         lat, lng = location.split(",")
         p_locationLat = lat
         p_locationLong = lng
         #p_radius = 5
-        p_searchType = 'restaurant'
+        p_searchType = 'Restaurant'
         #p_searchKeyWord = ""
-        p_numResults = 25
+        p_numResults = 50
         # log.error(lat)
         # log.error(lng)
         results = retrieve_results(p_locationLat, p_locationLong, p_radius, p_searchType, p_searchKeyWord, p_numResults)
