@@ -104,7 +104,7 @@
           }
 
           function getCoords() {
-            post('/restaurants/', {apiCoords: coordStringJS});
+            post('/autopop/', {apiCoords: coordStringJS});
           }
 
           function post(path, params, method) {
@@ -159,21 +159,11 @@
             }
             var x = document.getElementById("demo");
 
-
-
-            function showPosition(position) {
-
-                var currCoord = position.coords.latitude + "," + position.coords.longitude;
-                //console.log(currCoord)
-                post('/restaurants/', {apiCoords: currCoord});
-                }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo&libraries=places&callback=initAutocomplete"
             async defer></script>
 	</div>
     <button type="button" onclick="getCoords()">Submit!</button>
-    <button type="button" onclick="getLocation()">Use Current Location</button>
-
 
 </head>
 <body>

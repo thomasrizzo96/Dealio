@@ -105,10 +105,7 @@ def populate_database(p_locationLat,p_locationLong):
 
     try:
         connection = sqlite3.connect("../db.sqlite3")
-    
         cursor = connection.cursor()
-    
-        #print("Now trying to write to database")
 
         for er in search_results:
             lat = er['geometry']['location']['lat']
@@ -128,19 +125,10 @@ def populate_database(p_locationLat,p_locationLong):
             yelp = yelpURL
             place_id = er['place_id']
             phone_number,website = get_phone_website(place_id)
-            print(name)
-            print(place_id)
-            print(phone_number)
-            print(website)
-            #print(unique_id)
-            #print("Yelp Website: " + yelp)
-
             try:
                 picture_reference = er['photos'][0]['photo_reference']
                 picURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + picture_reference + '&key=' + API_key
                 resource = urllib.request.urlopen(picURL)
-
-                
                 pictureName = unique_id + ".jpg"
                 fileName = os.path.join(dir,'static/pictures/restaurant_pics/'+unique_id+".jpg")
                 picture = pictureName
@@ -148,17 +136,8 @@ def populate_database(p_locationLat,p_locationLong):
                 output = open(fileName,"wb")
                 output.write(resource.read())
                 output.close()
-
-                #img = Image.open(fileName)
-                #img.show()
-        
             except:
                 picture = "NULL"
-
-            #pic = urllib.urlretrieve(picURL, "pic.jpg")
-            #img = Image.open(pic)
-            #img.show()
-            
 
             category = ""
             for i in er['types']:
@@ -168,14 +147,10 @@ def populate_database(p_locationLat,p_locationLong):
                 find_string = "SELECT * FROM 'dealioApp_restaurant' WHERE google_id ='" + unique_id + "' LIMIT 1;"
                 cursor.execute(find_string)
                 results = cursor.fetchall()
-                #print(results)
                 if len(results)==0:
                     print(name + " was not in database. Inserting now.")
                     
                     string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, phone_number, email_address, website, picture, category, rating, yelp, google_id, place_id, address) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """','""" + place_id + """','""" + address + """');"""
-
-                    #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
-                    #print(string)
                     cursor.execute(string)
                     connection.commit()
                 else:
@@ -195,70 +170,94 @@ def populate_database(p_locationLat,p_locationLong):
             connection.rollback()
         
         print ("Error %s:" % e.args[0])
-
     finally:
     
         if connection:
-            connection.close() 
+            connection.close()
 
 
-def populate_database_django(p_locationLat,p_locationLong):
-    search_results = google_search('restaurant','',20,p_locationLat,p_locationLong)
-
+def populate_database_django(p_locationLat, p_locationLong):
+    search_results = google_search('restaurant', '', 20, p_locationLat, p_locationLong)
+    log.error("populate_database_django")
     try:
+        log.error("connecting to database")
+        connection = sqlite3.connect("../db.sqlite3")
+        cursor = connection.cursor()
+        log.error("successfully connected")
+
         for er in search_results:
             lat = er['geometry']['location']['lat']
             lng = er['geometry']['location']['lng']
 
-            yelpURL = get_yelp_url(lat,lng)
-            if yelpURL is None: yelpURL = ''
+            yelpURL = get_yelp_url(lat, lng)
+            if yelpURL is None: yelpURL = '/'
 
             unique_id = er['id']
             owner_id = 0
             name = er['name']
             description = "To be implemented"
             address = er['vicinity']
-            phone_number = "To be implemented"
             email_address = "To be implemented"
-            website = "To be implemented"
-            picture = "To be implemented"
+            picture = "no_image.png"
             rating = er['rating']
             yelp = yelpURL
             place_id = er['place_id']
-            #print(unique_id)
-            #print("Yelp Website: " + yelp)
+            phone_number, website = get_phone_website(place_id)
+            try:
+                picture_reference = er['photos'][0]['photo_reference']
+                picURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' + picture_reference + '&key=' + API_key
+                resource = urllib.request.urlopen(picURL)
+                pictureName = unique_id + ".jpg"
+                fileName = os.path.join(dir, 'static/pictures/restaurant_pics/' + unique_id + ".jpg")
+                picture = pictureName
+                # fileName = name + '.jpg'
+                output = open(fileName, "wb")
+                output.write(resource.read())
+                output.close()
+            except:
+                picture = "no_image.png"
 
             category = ""
             for i in er['types']:
-                category +=i + ','
-            
-            try:
-                log.error("Attemping to select database")
-                find_string = "SELECT * FROM 'dealioApp_restaurant' WHERE google_id ='" + unique_id + "' LIMIT 1;"
-                currQuery = Restaurant.objects.raw(find_string)
-                log.error("Attemping to insert into database")
-                if len(str(currQuery))==0:
-                    #print(name + " was not in database. Inserting now.")
-                    
-                    #string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, address, phone_number, email_address, website, picture, category, rating, yelp, google_id) VALUES (""" + str(owner_id) + """," """ + name + """",'"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
+                category += i + ','
 
-                    rest = Restaurant(owner_number=0, name=name, description=description, address=address, phone_number=phone_number, email_address=email_address, website=website, picture=picture, category=category, rating=rating, yelp=yelp, google_id=unique_id, place_id=place_id)
-                    #string = """INSERT INTO dealioApp_restaurant VALUES (""" + str(owner_id) + """,'""" + name + """','"""+ description + """','""" + address + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(rating) + """','""" + yelp + """','""" + unique_id + """');"""
-                    #print(string)
-                    rest.save()
+            try:
+                log.error("Checking to see if entry is in database")
+                find_string = "SELECT * FROM 'dealioApp_restaurant' WHERE google_id ='" + unique_id + "' LIMIT 1;"
+                cursor.execute(find_string)
+                results = cursor.fetchall()
+                if len(results) == 0:
+                    log.error(name + " was not in database. Inserting now.")
+
+                    string = """INSERT INTO dealioApp_restaurant(owner_number, name, description, phone_number, email_address, website, picture, category, rating, yelp, google_id, place_id, address) VALUES (""" + str(
+                        owner_id) + """," """ + name + """",'""" + description + """','""" + phone_number + """','""" + email_address + """','""" + website + """','""" + picture + """','""" + category + """','""" + str(
+                        rating) + """','""" + yelp + """','""" + unique_id + """','""" + place_id + """','""" + address + """');"""
+                    cursor.execute(string)
+                    connection.commit()
                 else:
                     log.error(name + " is already in database. Skipping entry...")
                     continue
-            
+
             except sqlite3.Error as e:
-                log.error(":(")
 
+                if connection:
+                    connection.rollback()
+                    print("\n\n")
+                    log.error("Error %s:" % e.args[0])
+                    log.error("\n\n")
     except sqlite3.Error as e:
+        log.error("Connection Failed")
 
-        
+        if connection:
+            connection.rollback()
+
         log.error("Error %s:" % e.args[0])
+    finally:
 
-########################################
+        if connection:
+            connection.close()
+
+                ########################################
 #Yelp API for Yelp URL
 import rauth #Used for the Yelp URL API
 
@@ -309,7 +308,7 @@ def google_search(p_searchType, p_searchKeyWord, p_radius,p_locationLat,p_locati
 
 
     rawData = urllib.request.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + str(p_locationLat) + ',' + str(p_locationLong) + '&radius=' + str(p_radius) + '&type=' + encodedType + '&keyword=' + encodedKeyWord + '&key=' + API_key)
-    print(rawData)
+    #print(rawData)
     #rawData = urllib.urlopen('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.745161,-111.8119312&radius=8000&type=bar&keyword=&key=AIzaSyBueezSv1I_p8lywu8vm88YevVptloCcjo
 
     reader = codecs.getreader("utf-8")

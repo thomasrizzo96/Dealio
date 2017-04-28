@@ -115,8 +115,8 @@
             <ul style="list-style: none">
                 {% for rest in restaurants %}
                     {% if rest.is_filtered is True %}
-                        <div stye="text-align:center">
-                        <li><h1 style="text-align:center;"><a class= "btn btn-primary btn-lg" style="width:250px;" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a></h1>
+                        <div style="text-align:left">
+                        <li><h1 style="text-align:center;"><a class= "btn btn-primary btn-lg" style="width:250px;" href= "{% url 'promotions'  rest.id %}" >{{rest.name}}</a> Rating: {{ rest.rating }}</h1>
                         <!--create a hyper link to a certain restaurant's promotion list using its id in the database-->
                         </div>
                     {% endif %}

@@ -34,6 +34,9 @@ def restaurants(request):
     restaurant = list()
     result_list = list()
 
+    if request.method != "POST":
+        return render(request, 'dealioApp/home.html')
+
     # print(result_list)
     try:
         location = request.POST['apiCoords']
@@ -141,6 +144,21 @@ def promotions(request, restaurant_id):#pass in a restaurant's id into this view
     restaurant = Restaurant.objects.get(id = restaurant_id)
     restaurant.fillPromoList()
     return render(request, 'dealioApp/promotions.html', {'restaurant': restaurant})
+
+@csrf_exempt
+def autopop(request):
+    if request.method != "POST":
+        return render(request, 'dealioApp/autopop.html')
+
+    try:
+        coordString = request.POST['apiCoords']
+        lat, lng = coordString.split()
+        populate_database_django(lat, lng)
+    except:
+        return(render(request,'dealioApp/autopop.html'))
+
+    ctx = {'coords': coordString, 'restaurants': result_list}
+    return render(request, 'dealioApp/restaurants.html',ctx)
 
 
 
